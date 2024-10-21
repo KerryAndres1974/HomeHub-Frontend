@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import Inputs from '../componentes/Inputs.jsx';
 import { useParams, useNavigate } from "react-router-dom";
+import Inputs from '../componentes/Inputs.jsx';
 import '../hojasEstilos/Editarinmueble.css';
-import Proyectos from '../componentes/Proyectos.jsx';
 import Swal from 'sweetalert2';
 
 export function Editarproyecto() {
@@ -14,8 +13,14 @@ export function Editarproyecto() {
     const [ciudad, setCiudad] = useState('Ciudad');
     const [tipo, setTipo] = useState('Tipo');
     const { idProyecto } = useParams();
-    const [proyecto, setProyecto] = useState([])
+    const [proyecto, setProyecto] = useState([]);
     const goTo = useNavigate();
+
+    const [imagenes, setImagenes] = useState(proyecto.imagen || []);
+
+    const eliminarImagen = (index) => {
+        setImagenes(imagenes.filter((_, i) => i !== index));
+    };
 
     // Expresiones para formularios
     const expresiones = {
@@ -26,9 +31,9 @@ export function Editarproyecto() {
 
     // Obtiene el proyecto
     useEffect(() => {
-        const cargarProyectos = async () => {
+        const cargarProyecto = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/mostrar-proyecto/${idProyecto}`);
+                const response = await fetch(`http://localhost:8000/get-proyecto/${idProyecto}`);
     
                 if(response.ok){
                     const data = await response.json();
@@ -41,75 +46,32 @@ export function Editarproyecto() {
             }
         };
     
-        cargarProyectos(); // Llama a la función aquí
+        cargarProyecto(); // Llama a la función aquí
     
     }, [idProyecto]);
 
     // Envia la peticion al backend para actualizar el proyecto
-    const actualizaProyecto = (e) => {
+    const Acciones = (e) => {
         e.preventDefault();
+        const accion = e.nativeEvent.submitter.value;
         
-        if (nombre.valido === 'true' || direccion.valido === 'true' ||
-            ciudad !== 'Ciudad' || tipo !== 'Tipo' || precio.valido === 'true' || 
-            descripcion.valido === 'true') {
-            
-            fetch(`http://localhost:8000/editar-proyecto/${idProyecto}`, {
-                method: 'PUT',
-                body: JSON.stringify({descripcion: descripcion.campo,
-                    ciudad: ciudad,
-                    tipo: tipo, 
-                    precio: precio.campo,
-                    nombre: nombre.campo,
-                    direccion: direccion.campo,
-                    idproyecto: idProyecto}),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
-                }
-                return response.json(); // Suponiendo que el servidor responde con JSON
-            })
-            .then(data => {
-                // Manejar la respuesta exitosa aquí
-                Swal.fire({
-                    icon: "success",
-                    title: "Se guardaron los cambios Exitosamente"
-                });
-            })
-            .catch(error => {
-                // Manejar errores de la solicitud aquí
-                Swal.fire({
-                    icon: "error",
-                    title: "Algo salio mal...",
-                    text: error
-                  });
-            });
-            
-        } else {
-            setFormularioValido(false);
-        }
-    }
-
-    // Envia la peticion al backend para borrar el proyecto
-    const elimiarPublicacion = (e) => {
-        e.preventDefault();
-        Swal.fire({
-            icon: "question",
-            title: "¿Seguro que quieres eliminar tu publicaion?",
-            showConfirmButton: true,
-            showCancelButton: true,
-            allowOutsideClick: false,
-            allowEnterKey: false,
-            confirmButtonText: "Aceptar",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-
-            if(result.isConfirmed) {
-                fetch(`http://localhost:8000/borrar-proyecto/${idProyecto}`, {
+        if (accion === 'Confirmar'){
+            if (nombre.valido === 'true' || direccion.valido === 'true' ||
+                ciudad !== proyecto.ciudad || tipo !== proyecto.tipo || precio.valido === 'true' || 
+                descripcion.valido === 'true') {
+                
+                fetch(`http://localhost:8000/edit-proyecto/${idProyecto}`, {
                     method: 'PUT',
+                    body: JSON.stringify({descripcion: descripcion.campo,
+                        ciudad: ciudad,
+                        tipo: tipo, 
+                        precio: precio.campo,
+                        nombre: nombre.campo,
+                        direccion: direccion.campo,
+                        idproyecto: idProyecto}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -121,13 +83,7 @@ export function Editarproyecto() {
                     // Manejar la respuesta exitosa aquí
                     Swal.fire({
                         icon: "success",
-                        title: "Se elimino la publicacion Exitosamente",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        allowEnterKey: false,
-                        timer: 3000,
-                    }).then(() => {
-                        goTo('/Mis-publicaciones');
+                        title: "Se guardaron los cambios Exitosamente"
                     });
                 })
                 .catch(error => {
@@ -138,35 +94,86 @@ export function Editarproyecto() {
                         text: error
                       });
                 });
+                
+            } else {
+                setFormularioValido(false);
             }
-        });
-    };
+        }
+        else if (accion === 'Eliminar') {
+            Swal.fire({
+                icon: "question",
+                title: "¿Seguro que quieres eliminar tu publicaion?",
+                showConfirmButton: true,
+                showCancelButton: true,
+                allowOutsideClick: false,
+                allowEnterKey: false,
+                confirmButtonText: "Aceptar",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+    
+                if(result.isConfirmed) {
+                    fetch(`http://localhost:8000/delete-proyecto/${idProyecto}`, {
+                        method: 'PUT',
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+                        }
+                        return response.json(); // Suponiendo que el servidor responde con JSON
+                    })
+                    .then(data => {
+                        // Manejar la respuesta exitosa aquí
+                        Swal.fire({
+                            icon: "success",
+                            title: "Se elimino la publicacion Exitosamente",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            allowEnterKey: false,
+                            timer: 3000,
+                        }).then(() => {
+                            goTo('/Mis-publicaciones');
+                        });
+                    })
+                    .catch(error => {
+                        // Manejar errores de la solicitud aquí
+                        Swal.fire({
+                            icon: "error",
+                            title: "Algo salio mal...",
+                            text: error
+                          });
+                    });
+                }
+            })
+        }
+    }
 
     return(
         <div className='contenedorPrincipalEdicion'>
 
             <div className='contenedorInformacionInmueble'>
 
-                <div className="accionProyecto">
-                    <Proyectos
-                        nombre={proyecto.nombre}
-                        tipo={proyecto.tipo}
-                        ciudad={proyecto.ciudad}
-                        precio={proyecto.precio}
-                        imagen={proyecto.imagen}
-                        direccion={proyecto.direccion}
-                        descripcion={proyecto.descripcion}
-                        coincide={null}
-                    />
-                    <button className='btn-eliminar' onClick={elimiarPublicacion}>Eliminar Publicaion</button>
+                <div className="contenedor-imagenes">
+                    {(Array.isArray(proyecto.imagen) ? proyecto.imagen : []).map((image, i) => (
+                        <div className="contenedor-imagen" key={i}>
+                            <h1 className="contorno">x</h1>
+                            <img 
+                                key={i}
+                                src={image}
+                                alt={`Imagen ${i + 1} del proyecto`}
+                                className="imagen-proyecto"    
+                                onClick={() => eliminarImagen(i)}
+                            />
+                        </div>
+                    ))}
                 </div>
-
-                <form className='contenedorEditar' onSubmit={actualizaProyecto}>
+                
+                <form className='contenedorEditar' onSubmit={(e) => Acciones(e)}>
                     
                     <h2 className='tituloEditar'>Editar tu Inmueble ID: {idProyecto}</h2>
                     <div className='contenedor-inputs'>
                         <Inputs
                             id='i1'
+                            place={proyecto.nombre}
                             estado={nombre}
                             cambiarEstado={setNombre}
                             tipo='text'
@@ -177,6 +184,7 @@ export function Editarproyecto() {
                         />
                         <Inputs
                             id='i2'
+                            place={proyecto.direccion}
                             estado={direccion}
                             cambiarEstado={setDireccion}
                             tipo='text'
@@ -188,22 +196,27 @@ export function Editarproyecto() {
 
                         <select className='formularioDinamico' value={ciudad}
                         onChange={(e) => setCiudad(e.target.value)} id='i3' title='Ciudad'>
-                            <option disabled >Ciudad</option>
-                            <option>Cali</option>
-                            <option>Buga</option>
-                            <option>Tuluá</option>
-                            <option>Jamundí</option>
+                            <option  >{proyecto.ciudad}</option>
+                            {['Cali', 'Buga', 'Tuluá', 'Jamundí']
+                            .filter((opcion) => opcion !== proyecto.ciudad) // Filtra la ciudad actual
+                            .map((opcion, index) => (
+                                <option key={index}>{opcion}</option>
+                            ))}
                         </select>
                     
                         <select className='formularioDinamico' value={tipo}
                         onChange={(e) => setTipo(e.target.value)} id='i4' title='Tipo'>
-                            <option disabled >Tipo</option>
-                            <option>Casa</option>
-                            <option>Apartamento</option>
+                            <option  >{proyecto.tipo}</option>
+                            {['Casa', 'Apartamento']
+                            .filter((opcion) => opcion !== proyecto.tipo) // Filtra la ciudad actual
+                            .map((opcion, index) => (
+                                <option key={index}>{opcion}</option>
+                            ))}
                         </select>
 
                         <Inputs
                             id='i5'
+                            place={proyecto.descripcion}
                             estado={descripcion}
                             cambiarEstado={setDescripcion}
                             tipo='text'
@@ -214,6 +227,7 @@ export function Editarproyecto() {
                         />
                         <Inputs
                             id='i6'
+                            place={proyecto.precio}
                             estado={precio}
                             cambiarEstado={setPrecio}
                             tipo='text'
@@ -224,7 +238,10 @@ export function Editarproyecto() {
                         />
                     </div>
                     
-                    <input className='btn-editar' type='submit' value='Confirmar' />
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '30px' }}>
+                        <input className='btn-editar' type='submit' value='Confirmar' />
+                        <input className='btn-eliminar' type='submit' value='Eliminar' />
+                    </div>
 
                     {formularioValido === false && <div id='mensajeError'>
                         <p>Debes llenar todos los campos</p>

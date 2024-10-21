@@ -61,13 +61,13 @@ function Detallesinmueble() {
     useEffect(() => {
         const cargarProyectos = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/mostrar-proyecto/${idProyecto}`);
+                const response = await fetch(`http://localhost:8000/get-proyecto/${idProyecto}`);
     
                 if(response.ok){
                     const data = await response.json();
 
                     try {
-                        const response = await fetch(`http://localhost:8000/cargar-usuario/${data[0].idusuario}`);
+                        const response = await fetch(`http://localhost:8000/get-usuario/${data[0].idusuario}`);
             
                         if(response.ok){
                             const dato = await response.json();

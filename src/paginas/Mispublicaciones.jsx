@@ -37,7 +37,7 @@ function Mispublicaciones() {
   // Carga los proyectos del usuario
   const misProyectos = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/proyectos/${usuario.id}/usuario`);
+      const response = await fetch(`http://localhost:8000/proyectos/${usuario.id}`);
 
       if (response.ok) {
           const data = await response.json();
@@ -80,9 +80,10 @@ function Mispublicaciones() {
         <button className={`prev ${proyectos.length <= 3 ? 'hide-button' : ''}`} 
           style={{left: '0'}} onClick={handlePrev} >&lang;</button>
 
-        <div className='carrusel'>
-          {vacio === true && <p className='carrusel-vacio'>Si aun no has publicado tus proyectos, 
-            ¿que esperas? Es el momento ideal para hacerlo</p>}
+        {vacio === true && <div className='carrusel-vacio'><h3>Si aun no has publicado tus proyectos, 
+          ¿que esperas? Es el momento ideal para hacerlo</h3></div>}
+
+        {vacio === false && <div className='carrusel'>
           {proyectos.map((proyecto) => (
             <article key={proyecto.id} className='carrusel-proyecto' 
               onClick={() => {goTo(`/Mis-publicaciones/Editar-inmueble/${proyecto.id}`)}}
@@ -90,7 +91,7 @@ function Mispublicaciones() {
 
               <Proyecto
                 key={proyecto.id}
-                imagen={proyecto.imagen}
+                imagen={proyecto.imagen[0]}
                 nombre={proyecto.nombre}
                 tipo={proyecto.tipo}
                 ciudad={proyecto.ciudad}
@@ -101,7 +102,8 @@ function Mispublicaciones() {
 
             </article>
           ))}
-        </div>
+          
+        </div>}
 
         <button className={`next ${proyectos.length <= 3 ? 'hide-button' : ''}`} 
           style={{right: '0'}} onClick={handleNext}>&rang;</button>

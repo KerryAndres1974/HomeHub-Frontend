@@ -45,7 +45,7 @@ function Recuperar() {
         e.preventDefault();
 
         if(fase === 1 && correo !== ''){
-            fetch('http://localhost:8000/forgot-password', {
+            fetch('http://localhost:8000/forget-password', {
                 method: 'POST',
                 body: JSON.stringify({correo: correo}),
                 headers: {

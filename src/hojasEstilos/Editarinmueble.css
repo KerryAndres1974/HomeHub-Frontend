@@ -9,32 +9,46 @@
 }
 
 .contenedorInformacionInmueble {
-    height: auto;
+    height: 100vh;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
 
-    & .accionProyecto{
+    & .contenedor-imagenes{
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        width: auto;
-        height: 600px;
-    
-        & .btn-eliminar {
-            width: 180px;
-            height: 35px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            cursor: pointer;
-            color: #fff;
-            background: rgb(196, 0, 0);
-            transition: all 0.3s ease;
+        justify-content: center;
+        gap: 20px;
+
+        & .contorno {
+            display: none;
+            padding-top: 25px;
+            color: transparent;
+            font-size: 4rem;
+            width: 200px;
+            height: 135px;
+            border-radius: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            position: absolute;
+            z-index: 2;
+            transition: all 0.4s ease;
             &:hover {
-                background: rgb(255, 0, 0);
+                cursor: pointer;
+                background: #2c3e5073;
+                color: red;
+            }
+        }
+        
+        & .imagen-proyecto {
+            border-radius: 20px;
+            width: 200px;
+            height: 160px;
+            &:hover {
+                background-color: #2980b9;
             }
         }
     }
@@ -92,19 +106,32 @@
         }
     
         & .btn-editar {
-            font-family: Roboto, sans-serif;
             font-size: 18px;
             padding: 14px 32px;
             background: #3498db;
             color: #fff;
             border-radius: 15px;
             cursor: pointer;
-            text-align: center;
             width: 250px;
             border: 2px solid #2980b9;
             transition: all 0.5s ease;
             &:hover {
                 background-color: #2980b9;
+            }
+        }
+
+        & .btn-eliminar {
+            font-size: 18px;
+            padding: 14px 36px;
+            background: rgb(196, 0, 0);
+            color: #fff;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 250px;
+            transition: all 0.5s ease;
+            border: 2px solid rgb(255, 0, 0);;
+            &:hover {
+                background: rgb(255, 0, 0);
             }
         }
     }

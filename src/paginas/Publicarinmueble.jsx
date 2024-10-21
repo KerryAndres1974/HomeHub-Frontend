@@ -2,6 +2,7 @@ import Inputs from '../componentes/Inputs.jsx';
 import '../hojasEstilos/Publicarinmueble.css';
 import { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
+require('dotenv').config();
 
 function Mispublicaiones() {
   // Para publicar tu inmueble
@@ -19,6 +20,7 @@ function Mispublicaiones() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [cuentaImagenes, setCuentaImagenes] = useState(0);
   const [mensajeError, setMensajeError] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
   
   // Expresiones para formularios
   const expresiones = {
@@ -78,6 +80,8 @@ function Mispublicaiones() {
   // Envia la peticion al backend para publicar el inmueble
   const publicarInmueble = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const propietario = usuario.id;
     const formDataArray = [];
 
@@ -89,8 +93,8 @@ function Mispublicaiones() {
         let formData = new FormData();
 
         formData.append('file', files);
-        formData.append("upload_preset", "HomeHub");
-        formData.append("api_key", "453363773865368");
+        formData.append("upload_preset", process.env.CLOUDINARY_PRESET);
+        formData.append("api_key", process.env.CLOUDINARY_APIKEY);
         formData.append("timestamp", (Date.now() / 1000) | 0);
 
         formDataArray.push(formData);
@@ -98,7 +102,7 @@ function Mispublicaiones() {
 
       try {
         const response = await Promise.all(formDataArray.map(formData => 
-          fetch('https://api.cloudinary.com/v1_1/dyydtpzbg/image/upload', {
+          fetch(process.env.CLOUDINARY_URL, {
             method: 'POST',
             body: formData
           }).then((response) => response.json())
@@ -113,11 +117,11 @@ function Mispublicaiones() {
           precio: precio.campo,
           nombre: nombre.campo,
           idusuario: propietario,
-          imagen: urlsArray[0]};
+          imagenes: urlsArray};
 
         let datosJSON = JSON.stringify(datos);
 
-        fetch('http://localhost:8000/crear-proyecto', {
+        fetch('http://localhost:8000/new-proyecto', {
           method: 'POST',
           body: datosJSON,
           headers: {
@@ -162,10 +166,14 @@ function Mispublicaiones() {
     } else {
       setFormularioValido(false);
     }
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000)
   };
 
   return(
-    <div className='paginaPublicar'>
+    <div className='paginaPublicar' style={{ cursor: isLoading ? 'wait' : ''}}>
 
       <section className='contenedorPublicar'>
 
@@ -257,7 +265,12 @@ function Mispublicaiones() {
             style={{display: 'none'}}
             ref={fileInputRef} multiple/>
 
-          <input className='btn-publicar' type='submit' value='Publicar' />
+          <input
+            className='btn-publicar'
+            value='Publicar'
+            type='submit'
+            style={{ cursor: isLoading ? 'wait' : ''}}
+            disabled={isLoading}/>
 
           {formularioValido === false && <div id='mensajeError'><p>Debes llenar todos los campos</p></div>}
 

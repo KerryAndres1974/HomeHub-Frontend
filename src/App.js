@@ -136,35 +136,22 @@ export function App() {
 
     const cargarProyectos = async () => {
       try {
-        if(ciudad === 'Ciudad' && tipo === 'Tipo' && nombre === '') {
-          const response = await fetch('http://localhost:8000/all-proyectos-activos');
+        const response = await fetch('http://localhost:8000/get-proyectos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre: nombre, ciudad: ciudad, tipo: tipo })
+        });
 
-          if(response.ok){
-              const data = await response.json();
-              setProyecto(data);
-          } else {
-              console.error('Error al obtener los proyectos:', response.statusText);
-          }
-
-        } else if (ciudad !== 'Ciudad' || tipo !== 'Tipo' || nombre !== '') {
-          const response = await fetch(`http://localhost:8000/buscar-proyectos`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ nombre: nombre, ciudad: ciudad, tipo: tipo })
-          });
-
-          if(response.ok){
-            const data = await response.json();
-            setProyecto(data);
-          } else {
-            console.error('Error al obtener los proyectos:', response.statusText);
-          }
+        if(response.ok){
+          const data = await response.json();
+          setProyecto(data);
+        } else {
+          console.error('Error al obtener los proyectos:', response.statusText);
         }
-        } catch (error) {
-          console.error('Error al realizar la petición:', error);
-        }
+
+      } catch (error) {
+        console.error('Error al realizar la petición:', error);
+      }
     };
     cargarProyectos();
 

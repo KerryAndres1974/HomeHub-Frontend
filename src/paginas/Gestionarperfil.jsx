@@ -104,7 +104,7 @@ function Gestionarperfil() {
         }
       }
 
-      fetch(`http://localhost:8000/gestionar-perfil/${usuario.id}`, {
+      fetch(`http://localhost:8000/edit-perfil/${usuario.id}`, {
         method: 'PUT',
         body: JSON.stringify({
           name: nombre.campo,
