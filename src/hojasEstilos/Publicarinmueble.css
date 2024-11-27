@@ -16,7 +16,7 @@
 
     & .contenedorImagenesPublicacion{
         width: 440px;
-        height: 550px;
+        height: 500px;
         display: flex;
         padding: 0 14px;
         align-items: center;
@@ -25,13 +25,8 @@
         background: #61778a70;
         border-radius: 15px;
 
-        & .tituloAñadir {
-            font-size: 1.2rem;
-            color: #001f3f;
-        }
-
         & .contenedorImagenesSeleccionadas {
-            height: 80%;
+            height: 100%;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
@@ -39,19 +34,35 @@
             justify-content: space-evenly;
 
             & .imagenS {
-                width: 140px;
-                height: 180px;
-                cursor: pointer;
+                border-radius: 20px;
+                width: 180px;
+                height: 140px;
             }
     
             & .imagenV {
-                border: 2px dashed #fff;
-                background-image: url('../multimedia/photo.png');
-                background-position: center;
-                background-repeat: no-repeat;
-                width: 140px;
-                height: 180px;
+                width: 180px;
+                height: 135px;
                 cursor: pointer;
+                border-radius: 20px;
+                display: grid;
+                place-content: center;
+                border: 2px dashed white;
+            }
+
+            & .imagenE {
+                position: fixed;
+                inset: 0;
+                z-index: 50;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.75);
+
+                & .imagen {
+                    max-width: 48rem;
+                    max-height: 48rem;
+                    border-radius: 0.5rem;
+                }
             }
         }
     }

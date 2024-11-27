@@ -37,3 +37,37 @@ code {
   background: #dadada;
   border-radius: 50px;
 }
+
+.equis {
+  position: absolute; /* Para posicionarlo relativo al contenedor */
+  top: 5px;           /* Ajusta según el espacio que necesites */
+  right: 5px;         /* Ajusta según el espacio que necesites */
+  color: red;         /* Color del ícono, cámbialo según el diseño */
+  font-size: 20px;    /* Tamaño del ícono */
+  cursor: pointer;    /* Cursor de mano para indicar que es clickeable */
+  z-index: 10;
+}
+
+.addH {
+  font-size: 40px;
+}
+
+.botonH {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000;
+    color: black;
+    border-radius: 10px;
+    padding: 14px 28px;
+    background: #f2f2f2;
+    font-family: sans-serif;
+    transition: all 0.3s ease;
+    border: 2px solid #007bff;
+    &:hover {
+        background: #0b7dda;
+        color: white
+    }
+}

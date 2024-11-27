@@ -164,6 +164,7 @@ function Recuperar() {
 
     return(
         <div className='principal-recup'>
+            <button className='botonH' onClick={() => goTo('/')}>Regresar</button>
 
             {fase === 1 && (<form className='contenedor-recup' onSubmit={onSubmits}>
                 <h1 className='texto-recup'>Recupera tu contraseña</h1>

@@ -88,6 +88,8 @@ function Registro() {
 
     return(
         <div className='principal-registro'>
+            <button className='botonH' onClick={() => goTo('/')}>Regresar</button>
+            
             <form className='contenedor-registro' action='' onSubmit={Registrarme}>
                 
                 <h1 className='titulo-registro'>Registrate</h1>

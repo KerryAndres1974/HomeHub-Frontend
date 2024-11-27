@@ -22,24 +22,32 @@
         justify-content: center;
         gap: 20px;
 
-        & .contorno {
-            display: none;
-            padding-top: 25px;
-            color: transparent;
-            font-size: 4rem;
+        & .imagenV {
             width: 200px;
-            height: 135px;
+            height: 155px;
+            cursor: pointer;
             border-radius: 20px;
+            display: grid;
+            place-content: center;
+            border: 2px dashed grey;
+        }
+
+        & .imagenE {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 50;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            position: absolute;
-            z-index: 2;
-            transition: all 0.4s ease;
-            &:hover {
-                cursor: pointer;
-                background: #2c3e5073;
-                color: red;
+            background-color: rgba(0, 0, 0, 0.75);
+
+            & .imagen {
+                max-width: 48rem;
+                max-height: 48rem;
+                border-radius: 0.5rem;
             }
         }
         
@@ -47,9 +55,6 @@
             border-radius: 20px;
             width: 200px;
             height: 160px;
-            &:hover {
-                background-color: #2980b9;
-            }
         }
     }
 
@@ -133,6 +138,11 @@
             &:hover {
                 background: rgb(255, 0, 0);
             }
+        }
+
+        & .btn-eliminar.disabled, .btn-editar.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
         }
     }
 }

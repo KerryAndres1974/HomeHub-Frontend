@@ -2,6 +2,7 @@ import Inputs from '../componentes/Inputs.jsx';
 import '../hojasEstilos/Gestionarperfil.css';
 import { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
+import { MdPerson } from "react-icons/md";
 
 function Gestionarperfil() {
   // Para editar tu perfil
@@ -153,7 +154,7 @@ function Gestionarperfil() {
 
   return(
     <div className='paginaEditarPerfil'>
-
+      <button className='botonH' onClick={() => window.history.back()}>Volver a Home</button>
       <form className='contenedoEditarPerfil' onSubmit={enviarDatos}>
         <div className='encabezado'>
           <input
@@ -168,7 +169,7 @@ function Gestionarperfil() {
 
           <div className='contenedorFt' title='Cambiar foto de perfil' onClick={() => {añadeFoto.current.click()}}>
             {usuario.fotoperfil ? (<img src={usuario.fotoperfil} alt='' className='foto'/>) : 
-            (selectedImage ? <img src={selectedImage} alt='' className='foto'/> : <div className='fotoperfil'>Foto de Perfil</div>)}
+            (selectedImage ? <img src={selectedImage} alt='' className='foto'/> : <MdPerson className='fotoperfil'/>)}
           </div>
 
           <h1 className='tituloEditarPerfil'>Gestionar Perfil</h1>
@@ -249,43 +250,7 @@ function Gestionarperfil() {
             />
 
           </fieldset>
-
-          <fieldset className='DatosLaborales'> <legend>Datos Laborales</legend>
-
-            <Inputs
-              id='i7'
-              place={usuario.descripcionemp}
-              estado={descripcion}
-              cambiarEstado={setDescripcion}
-              tipo='text'
-              texto='Descripción de la empresa'
-              error='Campo invalido'
-              expresionRegular={expresiones.credenciales}
-              valido={descripcion.valido}
-            />
-            <Inputs
-              id='i8'
-              place={usuario.aniosexp}
-              estado={experiencia}
-              cambiarEstado={setExperiencia}
-              tipo='text'
-              texto='Años de experiencia'
-              error='Solo deben ser numeros'
-              expresionRegular={expresiones.numeros}
-              valido={experiencia.valido}
-            />
-            <Inputs
-              id='i9'
-              place={usuario.proyectosrea}
-              estado={realizados}
-              cambiarEstado={setRealizados}
-              tipo='text'
-              texto='Número de proyectos realizados'
-              error='Solo deben ser numeros'
-              expresionRegular={expresiones.numeros}
-              valido={realizados.valido}
-            />
-          </fieldset>
+          
         </div>
         
         <input className='btn-editar' type='submit' value='Confirmar'/>

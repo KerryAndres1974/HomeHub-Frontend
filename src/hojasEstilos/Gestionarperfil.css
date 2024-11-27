@@ -9,10 +9,9 @@
 }
 
 .contenedoEditarPerfil {
-    width: 90%;
+    width: 70%;
     height: 480px;
     display: flex;
-    padding: 0 15px;
     margin-top: 70px;
     background: #fff;
     border-radius: 20px;
@@ -35,36 +34,32 @@
             background: white;
             display: grid;
             place-items: center;
-            right: 95%;
+            right: 100%;
             top: -150px;
             width: 200px;
             height: 200px;
             border-radius: 50%;
+            cursor: pointer;
 
             & .fotoperfil {
-                width: 90%;
-                height: 90%;
                 background: #2980b9;
                 display: grid;
                 place-items: center;
                 color: white;
-                border-radius: 50%;
-                cursor: pointer;
             }
 
-            & .foto {
+            & .foto, .fotoperfil {
                 width: 90%;
                 height: 90%;
                 border-radius: 50%;
-                cursor: pointer;
             }
         }
     }
 
     & .contenedorFormulario {
         width: 100%;
-        display: flex;
-        justify-content: space-around;
+        display: grid;
+        place-content: center;
         
         & .DatosPersonales {
             width: 760px;
@@ -104,26 +99,6 @@
                     outline: none;
                     border: 2px solid blue;
                 }
-            }
-        }
-
-        & .DatosLaborales {
-            display: grid;
-            place-items: center;
-            height: 300px;
-            width: 380px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            padding-bottom: 14px;
-
-            & legend {
-                margin-left: 2px;
-                width: 130px;
-                display: grid;
-                place-items: center;
-                background: #ccc;
-                color: #001f3f;
-                border-radius: 5px;
             }
         }
     }

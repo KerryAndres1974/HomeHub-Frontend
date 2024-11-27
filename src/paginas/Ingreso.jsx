@@ -56,6 +56,7 @@ function Ingreso() {
 
     return(
         <div className='principal-login'>
+            <button className='botonH' onClick={() => goTo('/')}>Regresar</button>
 
             <form className='contenedor-login' onSubmit={Ingresar}>
 

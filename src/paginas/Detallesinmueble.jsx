@@ -16,22 +16,15 @@ function Detallesinmueble() {
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, setFormularioValido] = useState(null);
     const [mostrarInfo, setMostrarInfo] = useState(false);
+    const [imagenes, setImagenes] = useState([]);
+    const [selectedImage, setSelectedImage] = useState('');
 
     // Expresiones para formularios
     const expresiones = {
         credenciales: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // letras mayus y minus
         correo: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
         telefono: /^\d{10,10}$/, // si o si 10 numeros
-    };    
-
-    // Muestra los datos del vendedor
-    const openModal = () => {
-        setMostrarInfo(true);
-    }
-
-    const closeModal = () => {
-        setMostrarInfo(false);
-    }
+    };
 
     // Obtiene el token
     useEffect(() => {
@@ -59,7 +52,7 @@ function Detallesinmueble() {
 
     // Obtiene el proyecto y despues info del propietario
     useEffect(() => {
-        const cargarProyectos = async () => {
+        const cargarUsuario = async () => {
             try {
                 const response = await fetch(`http://localhost:8000/get-proyecto/${idProyecto}`);
     
@@ -88,8 +81,25 @@ function Detallesinmueble() {
                 console.error('Error al realizar la petición:', error);
             }
         };
+
+        const cargarImagenes = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/imagenes/${idProyecto}`);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setImagenes(data);
+                } else {
+                    console.error('Error al obtener las imagenes del proyecto:', response.statusText);
+                }
+
+            } catch (error) {
+                console.error('Error al realizar la petición:', error);
+            }
+        }
     
-        cargarProyectos(); // Llama a la función aquí
+        cargarUsuario();
+        cargarImagenes();
     
     }, [idProyecto]);
 
@@ -144,7 +154,7 @@ function Detallesinmueble() {
 
     return (
         <div className="paginaDetalles">
-
+            <button className='botonH' onClick={() => window.history.back()}>Volver a Home</button>
             <section className="parte1">
                 <div className="detalles">
                     <h1 className='precioInmuebles'>Precio desde: ${proyecto.precio}</h1>
@@ -165,20 +175,16 @@ function Detallesinmueble() {
 
                 <div className="caracteristicas">
                     <h1 className='textoZonas'>Zonas Comunes
-                        <button className='btn-vendedor' onClick={openModal}>Ver datos del vendedor</button>
+                        <button className='btn-vendedor' onClick={() => setMostrarInfo(true)}>Ver datos del vendedor</button>
                         {mostrarInfo && (
-                            <div className="infoVendedor" onClick={closeModal}>
+                            <div className="infoVendedor" onClick={() => setMostrarInfo(false)}>
                                 <div className="info">
                                     <h3>informacion del vendedor</h3>
                                     <div className='infoDatos'>
                                         <p>Nombre: {propietario.name}</p>
                                         <p>Email: {propietario.email}</p>
-                                        <p>Años de experiencia: {propietario.aniosexp}</p>
                                         <p>Telefono: {propietario.phone}</p>
-                                        <p>Proyectos Realizados: {propietario.proyectosrea}</p>
-                                        <p>Descripcion de su empresa: {propietario.descripcionemp}</p>
-                                        </div>
-                                    <button onClick={closeModal}>Cerrar</button>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -210,8 +216,22 @@ function Detallesinmueble() {
                 <div className='galeria'>
                     <h1 className='tituloGaleria'>Galería</h1>
                     <h2>Haz click para ver la imagen completa</h2>
-                    <a href={proyecto.imagen}><img src={proyecto.imagen} className="imagenInmueble" alt=""/></a>
+                    
+                    <div className='imagenes'>    
+                        {imagenes.map((imagen, index) => (
+                            <div className='imagenInmueble' key={index} onClick={() => setSelectedImage(imagen.imagen)}>
+                                <img src={imagen.imagen} className='imagenI' alt="Imagen del proyecto" />
+                            </div>
+                        ))}
+                    </div>
                 </div>
+
+                {selectedImage && <div 
+                    className='imagenE'
+                    onClick={() => setSelectedImage(null)}
+                >
+                    <img src={selectedImage} alt="Ampliada" className='imagen'  />
+                </div>}
 
                 <form className='datosInteresado' onSubmit={enviarDatos}>
                     <h1 className='tituloInteresado'>Dejanos tus datos</h1>

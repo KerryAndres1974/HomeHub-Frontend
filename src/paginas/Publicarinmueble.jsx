@@ -1,8 +1,8 @@
 import Inputs from '../componentes/Inputs.jsx';
 import '../hojasEstilos/Publicarinmueble.css';
 import { useState, useEffect, useRef } from 'react';
+import { MdCancel, MdAddHomeWork } from "react-icons/md";
 import Swal from 'sweetalert2';
-require('dotenv').config();
 
 function Mispublicaiones() {
   // Para publicar tu inmueble
@@ -10,7 +10,6 @@ function Mispublicaiones() {
   const [direccion, setDireccion] = useState({campo: '', valido: null});
   const [nombre, setNombre] = useState({campo: '', valido: null});
   const [precio, setPrecio] = useState({campo: '', valido: null});
-  const [formularioValido, setFormularioValido] = useState(null);
   const [ciudad, setCiudad] = useState('Ciudad');
   const [usuario, setUsuario] = useState('');
   const [tipo, setTipo] = useState('Tipo');
@@ -18,8 +17,7 @@ function Mispublicaiones() {
 
   const [guardaImagenes, setGuardaImagenes] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
-  const [cuentaImagenes, setCuentaImagenes] = useState(0);
-  const [mensajeError, setMensajeError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState('');
   const [isLoading, setIsLoading] = useState(null);
   
   // Expresiones para formularios
@@ -58,43 +56,63 @@ function Mispublicaiones() {
     e.preventDefault();
     const archivosSeleccionados = e.dataTransfer ? e.dataTransfer.files : e.target.files;
   
-    if (archivosSeleccionados.length > 0) {
-      if (selectedImages.length < 5) {  
-        const nuevasImagenes = Array.from(archivosSeleccionados).map(URL.createObjectURL);
-        
-        // Para ver las imagenes en un contenedor especifico
-        setSelectedImages((viejasImagenes) => [...viejasImagenes, ...nuevasImagenes]);
+    if (archivosSeleccionados.length <= 5) {
+      const nuevasImagenes = Array.from(archivosSeleccionados).map(URL.createObjectURL);
+      
+      // Para ver las imagenes en un contenedor especifico
+      setSelectedImages((viejasImagenes) => [...viejasImagenes, ...nuevasImagenes]);
 
-        // Para recoger las imagenes seleccionadas por el input
-        setGuardaImagenes((viejasImagenes) => [...viejasImagenes, ...fileInputRef.current.files]);
+      // Para recoger las imagenes seleccionadas por el input
+      setGuardaImagenes((viejasImagenes) => [...viejasImagenes, ...fileInputRef.current.files]);
 
-        // Limitante de imagenes
-        setCuentaImagenes((conteo) => conteo + archivosSeleccionados.length);
-
-      } else {
-        setMensajeError(true);
-      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'No puedes subir mas de cinco imagenes!',
+        toast: true,
+        color: 'red',
+        position: 'top-end',
+        timer: 3000,
+        width: '32%',
+        showConfirmButton: false
+      });
     }
   };
 
   // Envia la peticion al backend para publicar el inmueble
   const publicarInmueble = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
     const propietario = usuario.id;
     const formDataArray = [];
 
-    if(nombre.valido === 'true' && direccion.valido === 'true' && ciudad !== 'Ciudad' && 
-    tipo !== 'Tipo' && descripcion.valido === 'true' && precio.valido === 'true' && selectedImages.length > 0){
+    
+    if (nombre.valido === 'true' && direccion.valido === 'true' && ciudad !== 'Ciudad' && 
+      tipo !== 'Tipo' && descripcion.valido === 'true' && precio.valido === 'true') {
+        
+      if (selectedImages.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          text: 'Debes subir al menos una imagen!',
+          toast: true,
+          color: 'red',
+          position: 'top-end',
+          timer: 2000,
+          width: '30%',
+          showConfirmButton: false
+        });
+        return;
+      }
+
+      setIsLoading(true);
 
       for(let i=0; i < guardaImagenes.length; i++){
         let files = guardaImagenes[i];
         let formData = new FormData();
 
         formData.append('file', files);
-        formData.append("upload_preset", process.env.CLOUDINARY_PRESET);
-        formData.append("api_key", process.env.CLOUDINARY_APIKEY);
+        formData.append("upload_preset", process.env.REACT_APP_CLOUDINARY_PRESET);
+        formData.append("api_key", process.env.REACT_APP_CLOUDINARY_APIKEY);
         formData.append("timestamp", (Date.now() / 1000) | 0);
 
         formDataArray.push(formData);
@@ -102,7 +120,7 @@ function Mispublicaiones() {
 
       try {
         const response = await Promise.all(formDataArray.map(formData => 
-          fetch(process.env.CLOUDINARY_URL, {
+          fetch(process.env.REACT_APP_CLOUDINARY_URL, {
             method: 'POST',
             body: formData
           }).then((response) => response.json())
@@ -110,20 +128,20 @@ function Mispublicaiones() {
 
         const urlsArray = response.map(data => data.secure_url);
 
-        let datos = { direccion: direccion.campo,
+        const datos = JSON.stringify({ 
+          direccion: direccion.campo,
           descripcion: descripcion.campo,
           ciudad: ciudad,
           tipo: tipo,
           precio: precio.campo,
           nombre: nombre.campo,
           idusuario: propietario,
-          imagenes: urlsArray};
-
-        let datosJSON = JSON.stringify(datos);
+          imagenes: urlsArray
+        });
 
         fetch('http://localhost:8000/new-proyecto', {
           method: 'POST',
-          body: datosJSON,
+          body: datos,
           headers: {
             'Content-Type': 'application/json'
           },
@@ -131,40 +149,33 @@ function Mispublicaiones() {
         .then(response => {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
-          }
-          return response.json(); // Suponiendo que el servidor responde con JSON
-        })
-        .then(data => {
-          // Manejar la respuesta exitosa aquí
-          setDescripcion({campo: '', valido: null});
-          setDireccion({campo: '', valido: null});
-          setNombre({campo: '', valido: null});
-          setPrecio({campo: '', valido: null});
-          setCiudad('Ciudad');
-          setTipo('Tipo');
-          setCuentaImagenes(0);
-          setSelectedImages([]);
-          setGuardaImagenes([]);
-          setMensajeError(null);
-          setFormularioValido(null);
-          
+          };
+
           Swal.fire({
             icon: "success",
             title: "Publicado Exitosamente",
-          });
+          }).then(() => window.location.reload());
+          
         })
         .catch(error => {
-        // Manejar errores de la solicitud aquí
-        console.error('Error en la solicitud:', error);
-        setFormularioValido(false);
+          console.error('Error en la solicitud:', error);
         });
+
       } catch(error) {
         console.error('Error al subir la imagene:', error);
       }
-    } else if (selectedImages.length > 5) {
-      setMensajeError(true);
+
     } else {
-      setFormularioValido(false);
+      Swal.fire({
+        icon: 'error',
+        text: 'Debes llenar los campos correctamente',
+        toast: true,
+        color: 'red',
+        position: 'top-end',
+        timer: 2000,
+        width: '32%',
+        showConfirmButton: false
+      });
     }
 
     setTimeout(() => {
@@ -175,23 +186,56 @@ function Mispublicaiones() {
   return(
     <div className='paginaPublicar' style={{ cursor: isLoading ? 'wait' : ''}}>
 
+      <button className='botonH' onClick={() => window.history.back()}>Volver a Home</button>
+
       <section className='contenedorPublicar'>
 
         <div 
           className='contenedorImagenesPublicacion'
-          onClick={() => fileInputRef.current.click()}
           onDragOver={handleFileChange}
-          onDrop={handleFileChange}>
-          
-          <h1 className='tituloAñadir'>Añade fotos de tu propiedad</h1>
+          onDrop={handleFileChange}
+          title='Añade Fotos de tu Propiedad'>
 
           <div className='contenedorImagenesSeleccionadas'>
             {selectedImages.map((image, index) => 
-            (<img key={index} src={image} alt={`imagen-${index}`} className='imagenS' />))}
-            {cuentaImagenes < 5 && <p className='imagenV'></p>}
-          </div>
+              <div 
+                key={index} 
+                style={{ position: 'relative' }}
+                onClick={(e) => setSelectedImage(image)}
+              >
+                <MdCancel 
+                    className="equis"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedImages(selectedImages.filter((_, i) => i !== index))}}
+                />
+                <img 
+                  src={image} 
+                  alt={`imagen-${index}`} 
+                  className='imagenS'
+                />
+              </div>
+            )}
 
-          {mensajeError === true && <p id='mensaje-Error'>No se puede agregar más de 5 imágenes!</p>}
+            {selectedImages.length < 5 && (
+              <div 
+                className="imagenV" 
+                onClick={() => fileInputRef.current.click()}
+              >
+                <MdAddHomeWork className="addH" style={{ color: 'white' }}/>
+              </div>  
+            )}
+
+            {selectedImage && 
+              <div 
+                  className='imagenE'
+                  onClick={() => setSelectedImage(null)}
+              >
+                  <img src={selectedImage} alt="Ampliada" className='imagen' />
+              </div>
+            }
+          </div>
+          
         </div>
         
         <form className='contenedorFormulario' onSubmit={publicarInmueble}>
@@ -271,8 +315,6 @@ function Mispublicaiones() {
             type='submit'
             style={{ cursor: isLoading ? 'wait' : ''}}
             disabled={isLoading}/>
-
-          {formularioValido === false && <div id='mensajeError'><p>Debes llenar todos los campos</p></div>}
 
         </form>
 

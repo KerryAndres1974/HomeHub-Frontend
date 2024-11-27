@@ -3,6 +3,7 @@ import { useAuth } from './Auth/AuthProvider.jsx';
 import videoBg from './multimedia/videofondo.mp4';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { MdMessage, MdMenu } from "react-icons/md";
 import './App.css';
 
 export function App() {
@@ -51,10 +52,6 @@ export function App() {
         behavior: 'smooth',
       });
     }
-  };
-  
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible);
   };
 
   const toggleMessage = () => {
@@ -163,7 +160,7 @@ export function App() {
     <div className='contenedorPrincipal'>
       
       <header className={scrolled ? 'changed' : ''}>
-        <div className='contenedor1'>
+        <div className='contenedor1'> 
           <div className='titulo'>Home Hub</div>
           <ul className='menu'>
             <li className='contenidoPestaña'><a href='#seccion1' className='pestaña' onClick={handleClick}>Inicio</a></li>
@@ -180,19 +177,10 @@ export function App() {
         </div>}
         
         {logeado() === true && <div className='contenedorIconos'>
-          <img 
-            ref={contendorMensaje}
-            src={require('./multimedia/message.png')}
-            alt='mensaje'
-            className='imagenMensaje'
-            onClick={toggleMessage} />
-          <img  
-            ref={contendorMenu}
-            src={require('./multimedia/menu.png')}
-            alt='menu'
-            className='imagenMenu'
-            onClick={toggleMenu} />
-          </div>}
+          <MdMessage ref={contendorMensaje} className='mensaje' onClick={toggleMessage}/>
+          
+          <MdMenu ref={contendorMenu} className='menu' onClick={() => setMenuVisible(!menuVisible)}/>
+        </div>}
 
         {menuVisible === true && <ul className='menuVertical' ref={menuRef}>
           <Link to="/Gestionar-perfil" className='pestaña' >Gestionar Perfil</Link>
@@ -260,7 +248,7 @@ export function App() {
           </div>
 
           <div className='contenedor-botones'>
-            <input type='text' placeholder='Buscar x Nombre' className='input-buscar' id='s1'
+            <input type='text' placeholder='Buscar por Nombre' className='input-buscar' id='s1'
               value={nombre} onChange={(e) => {setNombre(e.target.value)}} />
 
             <select value={ciudad} title='Ciudad' className='boton' href='#seccion2' id='s2'
@@ -292,7 +280,10 @@ export function App() {
           <p className='lineaH'></p>
           
           <div className='contenedorFamiliaProyectos'>
-            {proyecto.map((proyecto) => (
+            {proyecto.filter((value, index, self) =>
+              index === self.findIndex((t) => (
+                t.id === value.id
+              ))).map((proyecto) => (
               <div className='contenedorXProyecto' onClick={() => 
                 {usuario ? (proyecto.idusuario === usuario.id ? goTo(`/Mis-publicaciones/Editar-inmueble/${proyecto.id}`) : 
                 goTo(`/Detalles-inmueble/${proyecto.id}`)) : 
@@ -313,7 +304,7 @@ export function App() {
           </div>
 
           {proyecto.length > 9 && 
-            <div className='contenedorXProyecto'>Hoolaaa</div>}
+            <div className='contenedorXProyecto' style={{ marginBottom: '30px' }}>Paginación</div>}
 
         </section>
 

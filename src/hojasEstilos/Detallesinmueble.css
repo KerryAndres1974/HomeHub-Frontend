@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     background: #fff;
+    position: relative;
 }
 
 .parte1 {
@@ -76,11 +77,20 @@
             justify-content: space-between;
 
             & .btn-vendedor {
-                height: 20px;
-                width: 150px;
+                width: 220px;
                 border-radius: 5px;
                 border: none;
                 cursor: pointer;
+                font-size: 16px;
+                color: black;
+                border-radius: 10px;
+                padding: 10px 0;
+                background: #f2f2f2;
+                transition: all 0.3s ease;
+                &:hover {
+                    background: #0b7dda;
+                    color: white
+                }
             }
 
             & .infoVendedor {
@@ -109,6 +119,7 @@
                         height: 100%;
                         display: flex;
                         flex-direction: column;
+                        gap: 10px;
                         justify-content: space-evenly;
                     }
                 }
@@ -144,8 +155,27 @@
     justify-content: space-around;
     background: #006a98;
 
+    & .imagenE {
+        position: fixed;          /* equivalente a 'fixed' */
+        top: 0;                   /* equivalente a 'inset-0' (top: 0) */
+        right: 0;                 /* equivalente a 'inset-0' (right: 0) */
+        bottom: 0;                /* equivalente a 'inset-0' (bottom: 0) */
+        left: 0;                  /* equivalente a 'inset-0' (left: 0) */
+        background-color: rgba(0, 0, 0, 0.75);  /* equivalente a 'bg-black bg-opacity-75' */
+        display: flex;            /* equivalente a 'flex' */
+        align-items: center;      /* equivalente a 'items-center' */
+        justify-content: center;  /* equivalente a 'justify-center' */
+        z-index: 50; 
+
+        & .imagen {
+            max-width: 48rem;        /* equivalente a 'max-w-3xl' (48rem en Tailwind) */
+            max-height: 48rem;       /* equivalente a 'max-h-3xl' (48rem en Tailwind) */
+            border-radius: 0.5rem;
+        }
+    }
+
     & .galeria {
-        width: 600px;
+        width: 50%;
         height: 600px;
         display: flex;
         color: #fff;
@@ -158,10 +188,28 @@
             color: #fff;
         }
 
+        & .imagenes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+
         & .imagenInmueble {
             margin-top: 30px;
             width: 200px;
             height: 200px;
+            cursor: pointer; 
+            position: relative;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+
+            & .imagenI {
+                width: 100%; 
+                height: 100%; 
+                object-fit: cover;
+                border-radius: 0.5rem;
+            }
         }
     }
 
