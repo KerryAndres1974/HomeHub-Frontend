@@ -54,13 +54,13 @@ function Detallesinmueble() {
     useEffect(() => {
         const cargarUsuario = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/get-proyecto/${idProyecto}`);
+                const response = await fetch(`http://localhost:8000/proyectos/proyecto/${idProyecto}`);
     
                 if(response.ok){
                     const data = await response.json();
 
                     try {
-                        const response = await fetch(`http://localhost:8000/get-usuario/${data[0].idusuario}`);
+                        const response = await fetch(`http://localhost:8000/usuarios/${data[0].idusuario}`);
             
                         if(response.ok){
                             const dato = await response.json();
@@ -117,7 +117,7 @@ function Detallesinmueble() {
                         nombre: nombre.campo}
             let datosJSON = JSON.stringify(datos);
 
-            fetch('http://localhost:8000/asignar-asesoria', {
+            fetch('http://localhost:8000/asesorias', {
                 method: 'POST',
                 body: datosJSON,
                 headers: {

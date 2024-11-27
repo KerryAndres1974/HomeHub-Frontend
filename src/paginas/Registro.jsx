@@ -49,18 +49,19 @@ function Registro() {
         correo.valido === 'true' &&
         telefono.valido === 'true' &&
         terminos){
-            let datos = {user: usuario.campo,
-                        name: nombre.campo,
-                        password: contraseña.campo,
-                        password2: contraseña2.campo,
-                        email: correo.campo,
-                        phone: telefono.campo};
-                
-            let datosJSON = JSON.stringify(datos);
+
+            const datos = JSON.stringify({
+                user: usuario.campo,
+                name: nombre.campo,
+                password: contraseña.campo,
+                password2: contraseña2.campo,
+                email: correo.campo,
+                phone: telefono.campo
+            });
             
-            fetch('http://localhost:8000/register', {
+            fetch('http://localhost:8000/usuarios', {
                 method: 'POST',
-                body: datosJSON,
+                body: datos,
                 headers: {
                     'Content-Type': 'application/json'
                 },

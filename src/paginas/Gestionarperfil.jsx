@@ -69,7 +69,20 @@ function Gestionarperfil() {
         const user = JSON.parse(cargaUtilDecodificada);
             
         // Puedes establecer el usuario en el estado
-        setUsuario(user);
+        fetch(`http://localhost:8000/usuarios/${user.id}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Error al obtener la información del usuario');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setUsuario(data[0]); // Almacenar la información del usuario en el estado
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+
       } catch (error) {
         console.error('Error al decodificar el token:', error);
       }
@@ -105,17 +118,17 @@ function Gestionarperfil() {
         }
       }
 
-      fetch(`http://localhost:8000/edit-perfil/${usuario.id}`, {
+      const datos = JSON.stringify({
+        name: nombre.campo,
+        password: contraseña.campo,
+        email: correo.campo,
+        phone: telefono.campo,
+        fotoperfil: imagen 
+      });
+
+      fetch(`http://localhost:8000/usuarios/${usuario.id}`, {
         method: 'PUT',
-        body: JSON.stringify({
-          name: nombre.campo,
-          password: contraseña.campo,
-          email: correo.campo,
-          phone: telefono.campo,
-          descripcion: descripcion.campo,
-          aniosexp: experiencia.campo,
-          proyectosrea: realizados.campo,
-          fotoperfil: imagen }),
+        body: datos,
         headers: {
           'Content-Type': 'application/json'
         },
@@ -139,8 +152,8 @@ function Gestionarperfil() {
         setFormularioValido(null);
         Swal.fire({
           icon: "success",
-          title: "Se gestionó tu perfil Exitosamente",
-        });
+          title: "Perfil editado con exito",
+        }).then(() => window.location.reload());
       })
       .catch(error => {
         // Manejar errores de la solicitud aquí

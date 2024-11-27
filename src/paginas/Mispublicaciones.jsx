@@ -37,7 +37,7 @@ function Mispublicaciones() {
   // Carga los proyectos del usuario
   const misProyectos = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/proyectos/${usuario.id}`);
+      const response = await fetch(`http://localhost:8000/proyectos/usuario/${usuario.id}`);
 
       if (response.ok) {
           const data = await response.json();
@@ -91,7 +91,7 @@ function Mispublicaciones() {
 
               <Proyecto
                 key={proyecto.id}
-                imagen={proyecto.imagen[0]}
+                imagen={proyecto.imagen}
                 nombre={proyecto.nombre}
                 tipo={proyecto.tipo}
                 ciudad={proyecto.ciudad}

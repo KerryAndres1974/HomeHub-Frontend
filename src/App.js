@@ -12,12 +12,12 @@ export function App() {
   const logeado = () => !!auth.login();
   
   const [fase, setFase] = useState(1);
-  const [tipo, setTipo] = useState('Tipo');
+  const [tipo, setTipo] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [ciudad, setCiudad] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [usuario, setUsuario] = useState(null);
   const [proyecto, setProyecto] = useState([]);
-  const [ciudad, setCiudad] = useState('Ciudad');
-  const [nombre, setNombre] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const [listaCorreo, setListaCorreo] = useState([]);
   const [listaMensaje, setListaMensaje] = useState([]);
@@ -58,11 +58,11 @@ export function App() {
     setBandejaVisible(!bandejaVisible);
     const cargarMensajes = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/obtener-asesorias/${usuario.id}`);
+        const response = await fetch(`http://localhost:8000/asesorias/${usuario.id}`);
 
             if(response.ok){
-                const data = await response.json();
-                setListaCorreo(data);
+                const datos = await response.json();
+                setListaCorreo(datos);
             } else {
                 console.error('Error al obtener los correos:', response.statusText);
             }
@@ -133,15 +133,11 @@ export function App() {
 
     const cargarProyectos = async () => {
       try {
-        const response = await fetch('http://localhost:8000/get-proyectos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nombre: nombre, ciudad: ciudad, tipo: tipo })
-        });
+        const response = await fetch('http://localhost:8000/proyectos');
 
         if(response.ok){
-          const data = await response.json();
-          setProyecto(data);
+          const datos = await response.json();
+          setProyecto(datos);
         } else {
           console.error('Error al obtener los proyectos:', response.statusText);
         }
@@ -152,7 +148,7 @@ export function App() {
     };
     cargarProyectos();
 
-  }, [nombre, ciudad, tipo]);
+  }, []);
 
   useEffect(() => {}, [proyecto]);
   
@@ -252,7 +248,7 @@ export function App() {
               value={nombre} onChange={(e) => {setNombre(e.target.value)}} />
 
             <select value={ciudad} title='Ciudad' className='boton' href='#seccion2' id='s2'
-              onChange={(e) => {setCiudad(e.target.value); handleClick(e)}}>
+              onChange={(e) => {setCiudad(e.target.value === 'Ciudad' ? '' : e.target.value); handleClick(e)}}>
               <option>Ciudad</option>
               <option>Cali</option>
               <option>Buga</option>
@@ -261,7 +257,7 @@ export function App() {
             </select>
 
             <select value={tipo} title='Tipo' className='boton' href='#seccion2' id='s3'
-              onChange={(e) => {setTipo(e.target.value); handleClick(e)}}>
+              onChange={(e) => {setTipo(e.target.value === 'Tipo' ? '' : e.target.value); handleClick(e)}}>
               <option>Tipo</option>
               <option>Casa</option>
               <option>Apartamento</option>
@@ -280,27 +276,32 @@ export function App() {
           <p className='lineaH'></p>
           
           <div className='contenedorFamiliaProyectos'>
-            {proyecto.filter((value, index, self) =>
-              index === self.findIndex((t) => (
-                t.id === value.id
-              ))).map((proyecto) => (
-              <div className='contenedorXProyecto' onClick={() => 
-                {usuario ? (proyecto.idusuario === usuario.id ? goTo(`/Mis-publicaciones/Editar-inmueble/${proyecto.id}`) : 
-                goTo(`/Detalles-inmueble/${proyecto.id}`)) : 
-                goTo(`/Detalles-inmueble/${proyecto.id}`)}} key={proyecto.id}>
+            {proyecto
+              .filter((proyecto) => {
+                const selectNombre = nombre === '' || proyecto.nombre.toLowerCase().includes(nombre.toLowerCase());
+                const selectCiudad = ciudad === '' || proyecto.ciudad === ciudad;
+                const selectTipo = tipo === '' || proyecto.tipo === tipo;
+                return selectNombre && selectCiudad && selectTipo;
+              })
+              .map((proyecto) => 
+                <div className='contenedorXProyecto' onClick={() => 
+                  {usuario ? (proyecto.idusuario === usuario.id ? goTo(`/Mis-publicaciones/Editar-inmueble/${proyecto.id}`) : 
+                  goTo(`/Detalles-inmueble/${proyecto.id}`)) : 
+                  goTo(`/Detalles-inmueble/${proyecto.id}`)}} key={proyecto.id}>
 
-                <Proyecto
-                    nombre={proyecto.nombre}
-                    tipo={proyecto.tipo}
-                    ciudad={proyecto.ciudad}
-                    precio={proyecto.precio}
-                    imagen={proyecto.imagen}
-                    direccion={proyecto.direccion}
-                    descripcion={proyecto.descripcion}
-                    coincide={usuario ? (usuario.id === proyecto.idusuario ? true : false) : false}
-                />
-              </div>
-            ))}
+                  <Proyecto
+                      nombre={proyecto.nombre}
+                      tipo={proyecto.tipo}
+                      ciudad={proyecto.ciudad}
+                      precio={proyecto.precio}
+                      imagen={proyecto.imagen}
+                      direccion={proyecto.direccion}
+                      descripcion={proyecto.descripcion}
+                      coincide={usuario ? (usuario.id === proyecto.idusuario ? true : false) : false}
+                  />
+                </div>
+              )
+            }
           </div>
 
           {proyecto.length > 9 && 

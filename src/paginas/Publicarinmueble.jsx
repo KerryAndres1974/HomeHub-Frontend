@@ -139,7 +139,7 @@ function Mispublicaiones() {
           imagenes: urlsArray
         });
 
-        fetch('http://localhost:8000/new-proyecto', {
+        fetch('http://localhost:8000/proyectos', {
           method: 'POST',
           body: datos,
           headers: {

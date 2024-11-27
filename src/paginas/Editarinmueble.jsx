@@ -87,7 +87,7 @@ export function Editarproyecto() {
     useEffect(() => {
         const cargarProyecto = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/get-proyecto/${idProyecto}`);
+                const response = await fetch(`http://localhost:8000/proyectos/proyecto/${idProyecto}`);
     
                 if(response.ok){
                     const data = await response.json();
@@ -178,7 +178,7 @@ export function Editarproyecto() {
                         imagenes: urlsArray
                     });
 
-                    fetch(`http://localhost:8000/edit-proyecto/${idProyecto}`, {
+                    fetch(`http://localhost:8000/proyectos/${idProyecto}`, {
                         method: 'PUT',
                         body: datos,
                         headers: { 'Content-Type': 'application/json' },
@@ -236,8 +236,12 @@ export function Editarproyecto() {
             }).then((result) => {
     
                 if(result.isConfirmed) {
-                    fetch(`http://localhost:8000/delete-proyecto/${idProyecto}`, {
+                    fetch(`http://localhost:8000/proyectos/${idProyecto}`, {
                         method: 'PUT',
+                        body: JSON.stringify({ estado: 'inactivo' }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                     })
                     .then(response => {
                         if (!response.ok) {
