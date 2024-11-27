@@ -396,7 +396,7 @@ export function Editarproyecto() {
                         <div 
                             key={i} 
                             style={{ position: 'relative' }}
-                            onClick={() => setSelectedImage(image.imagen)}
+                            onClick={() => setSelectedImage(image.imagen_url)}
                         >
                             <MdCancel 
                                 className="equis"
@@ -405,7 +405,7 @@ export function Editarproyecto() {
                                     eliminarImagen(i, true, image.id)}}
                             />
                             <img
-                                src={image.imagen}
+                                src={image.imagen_url}
                                 alt={`Imagen ${i + 1} del proyecto`}
                                 className="imagen-proyecto"    
                                 

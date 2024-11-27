@@ -109,17 +109,19 @@ function Detallesinmueble() {
 
         if (correo.valido === 'true' && telefono.valido === 'true' && terminos && 
             nombre.valido === 'true' && asesoria !== 'En que podemos ayudarte?'){
-            let datos = {mensaje: asesoria,
-                        destinatario: propietario.id,
-                        remitente: (usuario ? usuario.id : null),
-                        correo: correo.campo,
-                        telefono: telefono.campo,
-                        nombre: nombre.campo}
-            let datosJSON = JSON.stringify(datos);
+
+            const datos = JSON.stringify({
+                mensaje: asesoria,
+                destinatario: propietario.id,
+                remitente: (usuario ? usuario.id : null),
+                correo: correo.campo,
+                telefono: telefono.campo,
+                nombre: nombre.campo
+            })
 
             fetch('http://localhost:8000/asesorias', {
                 method: 'POST',
-                body: datosJSON,
+                body: datos,
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -219,8 +221,8 @@ function Detallesinmueble() {
                     
                     <div className='imagenes'>    
                         {imagenes.map((imagen, index) => (
-                            <div className='imagenInmueble' key={index} onClick={() => setSelectedImage(imagen.imagen)}>
-                                <img src={imagen.imagen} className='imagenI' alt="Imagen del proyecto" />
+                            <div className='imagenInmueble' key={index} onClick={() => setSelectedImage(imagen.imagen_url)}>
+                                <img src={imagen.imagen_url} className='imagenI' alt="Imagen del proyecto" />
                             </div>
                         ))}
                     </div>
