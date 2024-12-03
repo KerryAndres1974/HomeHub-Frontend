@@ -45,9 +45,9 @@ function Recuperar() {
         e.preventDefault();
 
         if(fase === 1 && correo !== ''){
-            fetch('http://localhost:8000/forget-password', {
+            fetch('http://localhost:8000/usuarios/recuperar', {
                 method: 'POST',
-                body: JSON.stringify({correo: correo}),
+                body: JSON.stringify({email: correo}),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -75,9 +75,9 @@ function Recuperar() {
             cambiarCorreo(false);
 
         } else if (fase === 2 && codigo !== ''){
-            fetch('http://localhost:8000/verify-code', {
+            fetch('http://localhost:8000/usuarios/verify-code', {
                 method: 'POST',
-                body: JSON.stringify({correo: correo, codigo: codigo}),
+                body: JSON.stringify({email: correo, codigo: codigo}),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -111,11 +111,11 @@ function Recuperar() {
                 contras.valido === 'true' &&
                 validarContraseña() === true){
 
-            let datos = {email: usuario.campo, password: contras.campo, correo: correo};
+            let datos = {usuario: usuario.campo, password: contras.campo, correo: correo};
             let datosJSON = JSON.stringify(datos);
             console.log(datosJSON);
 
-            fetch('http://localhost:8000/reset-password', {
+            fetch('http://localhost:8000/usuarios/reset-password', {
                 method: 'POST',
                 body: datosJSON,
                 headers: {

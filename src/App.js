@@ -1,6 +1,5 @@
 import Proyecto from './componentes/Proyectos.jsx';
 import { useAuth } from './Auth/AuthProvider.jsx';
-import videoBg from './multimedia/videofondo.mp4';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { MdMessage, MdMenu } from "react-icons/md";
@@ -10,7 +9,7 @@ export function App() {
   const auth = useAuth();
   const goTo = useNavigate();
   const logeado = () => !!auth.login();
-  
+
   const [fase, setFase] = useState(1);
   const [tipo, setTipo] = useState('');
   const [nombre, setNombre] = useState('');
@@ -21,22 +20,75 @@ export function App() {
   const [scrolled, setScrolled] = useState(false);
   const [listaCorreo, setListaCorreo] = useState([]);
   const [listaMensaje, setListaMensaje] = useState([]);
-  
+
   const contendorMensaje = useRef(null);
   const mensajeRef = useRef(null);
   const contendorMenu = useRef(null);
   const menuRef = useRef(null);
-  
+
   const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
   const [bandejaVisible, setBandejaVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
-  
+
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [propiedadesPorPagina, setPropiedadesPorPagina] = useState(6); // Número de propiedades por página
+
+  const indiceUltimaPropiedad = paginaActual * propiedadesPorPagina;
+  const indicePrimeraPropiedad = indiceUltimaPropiedad - propiedadesPorPagina;
+  const propiedadesPaginadas = proyecto
+    .filter((proyecto) => {
+      const selectNombre = nombre === '' || proyecto.nombre.toLowerCase().includes(nombre.toLowerCase());
+      const selectCiudad = ciudad === '' || proyecto.ciudad === ciudad;
+      const selectTipo = tipo === '' || proyecto.tipo === tipo;
+      return selectNombre && selectCiudad && selectTipo;
+    })
+    .slice(indicePrimeraPropiedad, indiceUltimaPropiedad);
+
+  // Calcular el número total de páginas
+  const numeroPaginas = Math.ceil(
+    proyecto.filter((proyecto) => {
+      const selectNombre = nombre === '' || proyecto.nombre.toLowerCase().includes(nombre.toLowerCase());
+      const selectCiudad = ciudad === '' || proyecto.ciudad === ciudad;
+      const selectTipo = tipo === '' || proyecto.tipo === tipo;
+      return selectNombre && selectCiudad && selectTipo;
+    }).length / propiedadesPorPagina
+  );
+
+  // Función para cambiar de página
+  const cambiarPagina = (numero) => {
+    setPaginaActual(numero);
+  };
+
+  // Controles de paginación
+  const Paginacion = () => (
+    <div className="contenedorPaginacion">
+      {[...Array(numeroPaginas)].map((_, index) => (
+        <button
+          key={index}
+          className={`botonPaginacion ${paginaActual === index + 1 ? 'activo' : ''}`}
+          onClick={() => cambiarPagina(index + 1)}
+        >
+          {index + 1}
+        </button>
+      ))}
+      <select
+        value={propiedadesPorPagina}
+        onChange={(e) => setPropiedadesPorPagina(Number(e.target.value))}
+        className="selectPropiedadesPorPagina"
+      >
+        <option value={3}>3</option>
+        <option value={6}>6</option>
+        <option value={10}>10</option>
+      </select>
+    </div>
+  );
+
   const deslogeado = () => {
     window.location.reload();
     setMenuVisible(false);
     auth.logout();
   };
-  
+
   const handleClick = (e) => {
     e.preventDefault();
 
@@ -60,15 +112,15 @@ export function App() {
       try {
         const response = await fetch(`http://localhost:8000/asesorias/${usuario.id}`);
 
-            if(response.ok){
-                const datos = await response.json();
-                setListaCorreo(datos);
-            } else {
-                console.error('Error al obtener los correos:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error al realizar la petición:', error);
+        if (response.ok) {
+          const datos = await response.json();
+          setListaCorreo(datos);
+        } else {
+          console.error('Error al obtener los correos:', response.statusText);
         }
+      } catch (error) {
+        console.error('Error al realizar la petición:', error);
+      }
     };
     cargarMensajes();
   }
@@ -79,7 +131,7 @@ export function App() {
     if (token) {
       try {
         // Divide el token en sus partes: encabezado, carga útil y firma
-        const [, cargaUtilBase64, ] = token.split('.');
+        const [, cargaUtilBase64,] = token.split('.');
 
         // Decodifica la carga útil (segunda parte del token)
         const cargaUtilDecodificada = atob(cargaUtilBase64);
@@ -109,13 +161,13 @@ export function App() {
 
     //-------------------------MENU DESPLEGABLE-------------------------------//
     const handleClickOutside = (e) => {
-      if(contendorMenu.current && menuRef.current && 
-        !contendorMenu.current.contains(e.target) && 
+      if (contendorMenu.current && menuRef.current &&
+        !contendorMenu.current.contains(e.target) &&
         !menuRef.current.contains(e.target)) {
         setMenuVisible(false);
       }
-      if(contendorMensaje.current && mensajeRef.current && 
-        !contendorMensaje.current.contains(e.target) && 
+      if (contendorMensaje.current && mensajeRef.current &&
+        !contendorMensaje.current.contains(e.target) &&
         !mensajeRef.current.contains(e.target)) {
         setBandejaVisible(false);
       }
@@ -123,19 +175,19 @@ export function App() {
     document.addEventListener('mousedown', handleClickOutside);
     //-------------------------MENU DESPLEGABLE-------------------------------//
 
-    return(() => {
+    return (() => {
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('scroll', handleScroll);
     });
   }, []);
-  
+
   useEffect(() => {
 
     const cargarProyectos = async () => {
       try {
         const response = await fetch('http://localhost:8000/proyectos');
 
-        if(response.ok){
+        if (response.ok) {
           const datos = await response.json();
           setProyecto(datos);
         } else {
@@ -150,13 +202,13 @@ export function App() {
 
   }, []);
 
-  useEffect(() => {}, [proyecto]);
-  
+  useEffect(() => { }, [proyecto]);
+
   return (
     <div className='contenedorPrincipal'>
-      
+
       <header className={scrolled ? 'changed' : ''}>
-        <div className='contenedor1'> 
+        <div className='contenedor1'>
           <div className='titulo'>Home Hub</div>
           <ul className='menu'>
             <li className='contenidoPestaña'><a href='#seccion1' className='pestaña' onClick={handleClick}>Inicio</a></li>
@@ -164,18 +216,18 @@ export function App() {
             <li className='contenidoPestaña'><a href='#seccion4' className='pestaña' onClick={handleClick}>Servicios</a></li>
           </ul>
         </div>
-        
+
         {logeado() === false && <div className='contenedor2'>
           <ul className='menu'>
             <li className='contenidoPestaña'><Link to="/Ingreso" className='pestaña' >Ingresar</Link></li>
             <li className='contenidoPestaña'><Link to="/Registro" className='pestaña' >Registrarse</Link></li>
           </ul>
         </div>}
-        
+
         {logeado() === true && <div className='contenedorIconos'>
-          <MdMessage ref={contendorMensaje} className='mensaje' onClick={toggleMessage}/>
-          
-          <MdMenu ref={contendorMenu} className='menu' onClick={() => setMenuVisible(!menuVisible)}/>
+          <MdMessage ref={contendorMensaje} className='mensaje' onClick={toggleMessage} />
+
+          <MdMenu ref={contendorMenu} className='menu' onClick={() => setMenuVisible(!menuVisible)} />
         </div>}
 
         {menuVisible === true && <ul className='menuVertical' ref={menuRef}>
@@ -188,10 +240,10 @@ export function App() {
         {bandejaVisible === true && <div className='bandejaEntrada' ref={mensajeRef}>
 
           {listaCorreo.map((mensaje) => (
-            fase === 1 && <div className='contenedorMensaje' key={mensaje.id} onClick={() => {setFase(2); setMensajeSeleccionado(mensaje)}}>
+            fase === 1 && <div className='contenedorMensaje' key={mensaje.id} onClick={() => { setFase(2); setMensajeSeleccionado(mensaje) }}>
               <div className='detalleMensaje'>
                 <h1 className='nombreRemitente'>{mensaje.nombreremi}</h1>
-                <p className='mensajeR'>{mensaje.mensaje}</p>  
+                <p className='mensajeR'>{mensaje.mensaje}</p>
               </div>
             </div>
           ))}
@@ -199,56 +251,56 @@ export function App() {
           {fase === 2 && <div className='mensajeria'>
 
             <div className='remitente'>
-              <button className='botonRegresar' onClick={() => {setFase(1); setMensajeSeleccionado(null)}}>&lang;</button>
-                
+              <button className='botonRegresar' onClick={() => { setFase(1); setMensajeSeleccionado(null) }}>&lang;</button>
+
               <h1 className='nombreRemitente'>{mensajeSeleccionado.nombreremi}</h1>
             </div>
 
             <div className='Todosmensajes'>
               <div className='elMensaje'>{mensajeSeleccionado.mensaje}</div>
-              
-              {listaMensaje.map((lstring) => 
+
+              {listaMensaje.map((lstring) =>
                 <div className='elMensaje' key={mensajeSeleccionado.destinatario}>
                   {lstring}
-              </div>)}
+                </div>)}
             </div>
 
-            <form className='contenedorEnvio' onSubmit={(e) => {e.preventDefault()}}>
+            <form className='contenedorEnvio' onSubmit={(e) => { e.preventDefault() }}>
               <textarea
                 className='inputMensaje'
                 placeholder='Escribe un mensaje...'
                 value={mensaje}
-                onChange={(e) => {setMensaje(e.target.value)}} />
+                onChange={(e) => { setMensaje(e.target.value) }} />
               <input
                 type='submit'
                 value='Enviar'
-                className='btn-enviarMensaje' 
-                onClick={() => {setListaMensaje([...listaMensaje, mensaje]); setMensaje('')}}/>
+                className='btn-enviarMensaje'
+                onClick={() => { setListaMensaje([...listaMensaje, mensaje]); setMensaje('') }} />
             </form>
 
           </div>}
-          
+
         </div>}
       </header>
 
       <section className='SeccionHome' id='seccion1'>
-        
+
         <section className='contenedorBienvenida'>
-          <video src={videoBg} autoPlay loop muted className='videoHome'/>
-          <div className='contenedorApertura'> 
-            <h1 className='tituloBienvenida'>{usuario ? `¡Bienvenido a Home Hub ${usuario.username}!` : 
-            '¡Bienvenido a Home Hub!'}</h1>
-            <p className='textoBienvenida'>Hacemos realidad tus metas inmobiliarias con profesionalismo 
+          <video src="/multimedia/videofondo.mp4" autoPlay loop muted className='videoHome' />
+          <div className='contenedorApertura'>
+            <h1 className='tituloBienvenida'>{usuario ? `¡Bienvenido a Home Hub ${usuario.username}!` :
+              '¡Bienvenido a Home Hub!'}</h1>
+            <p className='textoBienvenida'>Hacemos realidad tus metas inmobiliarias con profesionalismo
               y dedicación. ¡Encuentra propiedades que se adaptan a tu estilo de vida!
             </p>
           </div>
 
           <div className='contenedor-botones'>
             <input type='text' placeholder='Buscar por Nombre' className='input-buscar' id='s1'
-              value={nombre} onChange={(e) => {setNombre(e.target.value)}} />
+              value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
 
             <select value={ciudad} title='Ciudad' className='boton' href='#seccion2' id='s2'
-              onChange={(e) => {setCiudad(e.target.value === 'Ciudad' ? '' : e.target.value); handleClick(e)}}>
+              onChange={(e) => { setCiudad(e.target.value === 'Ciudad' ? '' : e.target.value); handleClick(e) }}>
               <option>Ciudad</option>
               <option>Cali</option>
               <option>Buga</option>
@@ -257,7 +309,7 @@ export function App() {
             </select>
 
             <select value={tipo} title='Tipo' className='boton' href='#seccion2' id='s3'
-              onChange={(e) => {setTipo(e.target.value === 'Tipo' ? '' : e.target.value); handleClick(e)}}>
+              onChange={(e) => { setTipo(e.target.value === 'Tipo' ? '' : e.target.value); handleClick(e) }}>
               <option>Tipo</option>
               <option>Casa</option>
               <option>Apartamento</option>
@@ -265,102 +317,95 @@ export function App() {
           </div>
 
         </section>
-        
+
       </section>
 
-      <section className='SeccionPropiedades' id='seccion2'>
-      
-        <section className='contenedorPropiedades'>
-          <p className='lineaH' style={{margin: '60px 0 0 0'}}></p>
-          <h1 className='tituloProyectos'>Proyectos que Buscabas para tu Familia</h1>
-          <p className='lineaH'></p>
-          
-          <div className='contenedorFamiliaProyectos'>
-            {proyecto
-              .filter((proyecto) => {
-                const selectNombre = nombre === '' || proyecto.nombre.toLowerCase().includes(nombre.toLowerCase());
-                const selectCiudad = ciudad === '' || proyecto.ciudad === ciudad;
-                const selectTipo = tipo === '' || proyecto.tipo === tipo;
-                return selectNombre && selectCiudad && selectTipo;
-              })
-              .map((proyecto) => 
-                <div className='contenedorXProyecto' onClick={() => 
-                  {usuario ? (proyecto.idusuario === usuario.id ? goTo(`/Mis-publicaciones/Editar-inmueble/${proyecto.id}`) : 
-                  goTo(`/Detalles-inmueble/${proyecto.id}`)) : 
-                  goTo(`/Detalles-inmueble/${proyecto.id}`)}} key={proyecto.id}>
+      <section className="SeccionPropiedades" id="seccion2">
+        <section className="contenedorPropiedades">
+          <p className="lineaH" style={{ margin: '60px 0 0 0' }}></p>
+          <h1 className="tituloProyectos">Proyectos que Buscabas para tu Familia</h1>
+          <p className="lineaH"></p>
+          <Paginacion />
 
-                  <Proyecto
-                      nombre={proyecto.nombre}
-                      tipo={proyecto.tipo}
-                      ciudad={proyecto.ciudad}
-                      precio={proyecto.precio}
-                      imagen={proyecto.imagen}
-                      direccion={proyecto.direccion}
-                      descripcion={proyecto.descripcion}
-                      coincide={usuario ? (usuario.id === proyecto.idusuario ? true : false) : false}
-                  />
-                </div>
-              )
-            }
+          <div className="contenedorFamiliaProyectos">
+            {propiedadesPaginadas.map((proyecto) => (
+              <div
+                className="contenedorXProyecto"
+                onClick={() =>
+                  usuario
+                    ? proyecto.idusuario === usuario.id
+                      ? goTo(`/Mis-publicaciones/Editar-inmueble/${proyecto.id}`)
+                      : goTo(`/Detalles-inmueble/${proyecto.id}`)
+                    : goTo(`/Detalles-inmueble/${proyecto.id}`)
+                }
+                key={proyecto.id}
+              >
+                <Proyecto
+                  nombre={proyecto.nombre}
+                  tipo={proyecto.tipo}
+                  ciudad={proyecto.ciudad}
+                  precio={proyecto.precio}
+                  imagen={proyecto.imagen}
+                  direccion={proyecto.direccion}
+                  descripcion={proyecto.descripcion}
+                  coincide={usuario ? usuario.id === proyecto.idusuario : false}
+                />
+              </div>
+            ))}
           </div>
-
-          {proyecto.length > 9 && 
-            <div className='contenedorXProyecto' style={{ marginBottom: '30px' }}>Paginación</div>}
-
         </section>
-
-      </section>
+      </section>;
 
       <section className='SeccionNosotros' id='seccion3'>
-        
-        <div className='contenidoParrafo'><h1 className='tituloParrafo' style={{margin: '0 0 5px 0'}}>Misión.</h1>
-        Nuestra Misión es facilitar el acceso a hogares que reflejen 
-        los sueños y necesidades únicas de cada individuo. En Home Hub, nos enorgullece ser agentes 
-        de cambio en la vida de las personas, guiándolas hacia propiedades que no solo satisfacen 
-        sus necesidades habitacionales, sino que también dan vida a sus aspiraciones.</div>
 
-        <h1 className='tituloEmpresa'><br/>Home<br/>Hub</h1>
-      
-        <div className='contenidoParrafo'><h1 className='tituloParrafo' style={{margin: '0 0 5px 0'}}>Visión.</h1>
-        Nuestra Visión es trascender las expectativas comunes de la 
-        industria inmobiliaria. Nos visualizamos como líderes innovadores que redefinen la experiencia 
-        de encontrar el hogar perfecto. Nuestra Visión va más allá de simples transacciones; aspiramos 
-        a ser facilitadores de sueños, proporcionando soluciones habitacionales que marcan la 
-        diferencia en la vida de las personas.</div>
-        
+        <div className='contenidoParrafo'><h1 className='tituloParrafo' style={{ margin: '0 0 5px 0' }}>Misión.</h1>
+          Nuestra Misión es facilitar el acceso a hogares que reflejen
+          los sueños y necesidades únicas de cada individuo. En Home Hub, nos enorgullece ser agentes
+          de cambio en la vida de las personas, guiándolas hacia propiedades que no solo satisfacen
+          sus necesidades habitacionales, sino que también dan vida a sus aspiraciones.</div>
+
+        <h1 className='tituloEmpresa'><br />Home<br />Hub</h1>
+
+        <div className='contenidoParrafo'><h1 className='tituloParrafo' style={{ margin: '0 0 5px 0' }}>Visión.</h1>
+          Nuestra Visión es trascender las expectativas comunes de la
+          industria inmobiliaria. Nos visualizamos como líderes innovadores que redefinen la experiencia
+          de encontrar el hogar perfecto. Nuestra Visión va más allá de simples transacciones; aspiramos
+          a ser facilitadores de sueños, proporcionando soluciones habitacionales que marcan la
+          diferencia en la vida de las personas.</div>
+
       </section>
 
       <section className='SeccionServicios' id='seccion4'>
-        
+
         <h1 className='tituloServicios'>Home Hub te ofrece Servicios como:</h1>
         <div className='contenedorServicios'>
 
           <div className='subcontenedorServicios'>
             <h1 className='subtituloServicio'>Compra de Propiedades</h1>
-            <p className='parrafoServicios'  >Home Hub facilita el proceso de compra de propiedades, 
-            conectando a compradores con las mejores opciones del mercado. Nuestro equipo de expertos 
-            en bienes raíces se encarga de evaluar y presentar propiedades que se ajusten a tus criterios 
-            y necesidades.</p>
+            <p className='parrafoServicios'  >Home Hub facilita el proceso de compra de propiedades,
+              conectando a compradores con las mejores opciones del mercado. Nuestro equipo de expertos
+              en bienes raíces se encarga de evaluar y presentar propiedades que se ajusten a tus criterios
+              y necesidades.</p>
           </div>
           <div className='subcontenedorServicios'>
             <h1 className='subtituloServicio'>Venta de Propiedades</h1>
-            <p className='parrafoServicios'  >Si estás buscando vender tu propiedad, Home Hub ofrece 
-            servicios de intermediación para maximizar la visibilidad de tu inmueble en el mercado. 
-            Nos encargamos de promocionar tu propiedad, gestionar las negociaciones y cerrar acuerdos 
-            beneficiosos para ti como vendedor.</p>
+            <p className='parrafoServicios'  >Si estás buscando vender tu propiedad, Home Hub ofrece
+              servicios de intermediación para maximizar la visibilidad de tu inmueble en el mercado.
+              Nos encargamos de promocionar tu propiedad, gestionar las negociaciones y cerrar acuerdos
+              beneficiosos para ti como vendedor.</p>
           </div>
           <div className='subcontenedorServicios'>
             <h1 className='subtituloServicio'>Gestion de Propiedades</h1>
-            <p className='parrafoServicios'  >Para propietarios que desean ofrecer sus propiedades sin 
-            preocupaciones, ofrecemos servicios de gestión de propiedades. Esto incluye mantenimiento 
-            del inmueble, coordinación de pagos y solución de problemas cotidianos, permitiendo a los 
-            propietarios disfrutar de sus inversiones sin complicaciones.</p>
+            <p className='parrafoServicios'  >Para propietarios que desean ofrecer sus propiedades sin
+              preocupaciones, ofrecemos servicios de gestión de propiedades. Esto incluye mantenimiento
+              del inmueble, coordinación de pagos y solución de problemas cotidianos, permitiendo a los
+              propietarios disfrutar de sus inversiones sin complicaciones.</p>
           </div>
           <div className='subcontenedorServicios'>
             <h1 className='subtituloServicio'>Asesoramiento Financiero</h1>
-            <p className='parrafoServicios'  >En Home Hub, entendemos que la inversión en bienes raíces 
-            es una decisión financiera importante. Ofrecemos servicios de asesoramiento financiero 
-            para ayudarte a tomar decisiones informadas sobre la compra, venta o inversión en propiedades.</p>
+            <p className='parrafoServicios'  >En Home Hub, entendemos que la inversión en bienes raíces
+              es una decisión financiera importante. Ofrecemos servicios de asesoramiento financiero
+              para ayudarte a tomar decisiones informadas sobre la compra, venta o inversión en propiedades.</p>
           </div>
         </div>
 
