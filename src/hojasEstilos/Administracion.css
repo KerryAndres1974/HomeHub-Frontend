@@ -76,7 +76,7 @@
     }
 }
 
-.carrusel {
+.carrusel-proy {
     height: 100vh;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.75);
@@ -91,35 +91,35 @@
         border-radius: 20px;
         transition: all 0.4s ease;
     }
-}
 
-.close {
-    top: 10px;
-    right: 10px;
-    z-index: 1;
-    cursor: pointer;
-    color: #91979c;
-    position: absolute;
-    font-size: 34px;
-}
-
-.prev, .next {
-    top: 0;
-    z-index: 1;
-    width: 30px;
-    height: 80%;
-    margin-top: 5%;
-    border: none;
-    display: flex;
-    color: #91979c;
-    font-size: 34px;
-    cursor: pointer;
-    background: none;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-}
-
-& .hide-button {
-    display: none;
+    & .close {
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+        cursor: pointer;
+        color: #91979c;
+        position: absolute;
+        font-size: 34px;
+    }
+    
+    & .prev, .next {
+        top: 0;
+        z-index: 1;
+        width: 30px;
+        height: 80%;
+        margin-top: 5%;
+        border: none;
+        display: flex;
+        color: #91979c;
+        font-size: 34px;
+        cursor: pointer;
+        background: none;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    & .hide-button {
+        display: none;
+    }
 }

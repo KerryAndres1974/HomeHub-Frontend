@@ -289,7 +289,13 @@ export function App() {
       <section className='SeccionHome' id='seccion1'>
 
         <section className='contenedorBienvenida'>
-          <video src="/multimedia/videofondo.mp4" autoPlay loop muted className='videoHome' />
+          <video 
+            loop 
+            muted 
+            autoPlay 
+            className='videoHome'
+            src="https://res.cloudinary.com/dyydtpzbg/video/upload/v1733433381/HomeHub/videofondo_ezrzo9.mp4" 
+          />
           <div className='contenedorApertura'>
             <h1 className='tituloBienvenida'>{usuario ? `¡Bienvenido a Home Hub ${usuario.username}!` :
               '¡Bienvenido a Home Hub!'}</h1>
