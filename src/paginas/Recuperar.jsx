@@ -1,6 +1,6 @@
-import { useAuth } from '../Auth/AuthProvider.jsx';
+import { useAuth } from '../auth/AuthProvider.jsx';
 import Inputs from '../componentes/Inputs.jsx';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import '../hojasEstilos/Recuperar.css';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
@@ -22,8 +22,8 @@ function Recuperar() {
     const goTo = useNavigate();
     const auth = useAuth();
 
-    if(auth.Estalogeado){
-        return <Navigate to='/' />
+    if(!!auth.login().accessToken){
+        return <Navigate to='/Gestionar-perfil' />
     }
 
     const expresiones = { //letras, numeros, guion, guion bajo, @ y punto
@@ -179,6 +179,13 @@ function Recuperar() {
                 </div>
                 
                 <input className='btn-recup' type='submit' value='Enviar' />
+
+                <div className='contenedor-final'>
+                    <ul>
+                        <li className='pregunta-login'>Ya tienes cuenta?</li>
+                    </ul>
+                    <Link to="/Ingreso" className='pestaña' >Iniciar Sesión</Link>
+                </div>
 
                 {correoValido === false && <div id='mensaje-Error'>
                     <p><b>Error: </b>Este correo no tiene cuenta asociada</p>

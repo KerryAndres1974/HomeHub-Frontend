@@ -1,0 +1,64 @@
+.principal-propietario {
+    padding: 100px 0;
+    gap: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('../multimedia/fondoApp.jpg');
+    background-size: 100% cover;
+    background-repeat: repeat;
+    background-position: center center;
+    animation: desplazamiento 200s linear infinite;
+}
+
+.seccion-propietario {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 140px;
+    background: #fff;
+    border-radius: 20px;
+
+    p {
+        font-size: 1.3rem;
+        color: #007bff;
+    }
+
+    .fotoperfil {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20%;
+        height: 180%;
+        background: #fff;
+        border-radius: 50%;
+    
+        .foto {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+        }
+    
+        .person {
+            font-size: 100px;
+            color: #007bff;
+            border-radius: 50%;
+        }
+    }
+}
+
+.seccion-propiedades {
+    gap: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    & .carrusel-proyecto {
+        cursor: pointer;
+        border-radius: 20px;
+        transition: all 0.4s ease;
+        &:hover {
+            box-shadow: 13px 13px 13px 0 rgb(0 0 0 / 20%);
+        }
+    }
+}

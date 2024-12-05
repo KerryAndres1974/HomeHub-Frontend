@@ -1,5 +1,5 @@
 import Proyecto from './componentes/Proyectos.jsx';
-import { useAuth } from './Auth/AuthProvider.jsx';
+import { useAuth } from './auth/AuthProvider.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { MdMessage, MdMenu } from "react-icons/md";
@@ -8,7 +8,7 @@ import './App.css';
 export function App() {
   const auth = useAuth();
   const goTo = useNavigate();
-  const logeado = () => !!auth.login();
+  const logeado = !!auth.login().accessToken;
 
   const [fase, setFase] = useState(1);
   const [tipo, setTipo] = useState('');
@@ -21,10 +21,10 @@ export function App() {
   const [listaCorreo, setListaCorreo] = useState([]);
   const [listaMensaje, setListaMensaje] = useState([]);
 
-  const contendorMensaje = useRef(null);
-  const mensajeRef = useRef(null);
-  const contendorMenu = useRef(null);
-  const menuRef = useRef(null);
+  const contendorMensaje = useRef();
+  const mensajeRef = useRef();
+  const contendorMenu = useRef();
+  const menuRef = useRef();
 
   const [mensajeSeleccionado, setMensajeSeleccionado] = useState(null);
   const [bandejaVisible, setBandejaVisible] = useState(false);
@@ -135,10 +135,10 @@ export function App() {
 
         // Decodifica la carga útil (segunda parte del token)
         const cargaUtilDecodificada = atob(cargaUtilBase64);
-
+        
         // Convierte la carga útil decodificada a un objeto JavaScript
         const usuario = JSON.parse(cargaUtilDecodificada);
-
+        
         // Puedes establecer el usuario en el estado
         setUsuario(usuario);
       } catch (error) {
@@ -217,25 +217,28 @@ export function App() {
           </ul>
         </div>
 
-        {logeado() === false && <div className='contenedor2'>
+        {logeado === false && <div className='contenedor2'>
           <ul className='menu'>
             <li className='contenidoPestaña'><Link to="/Ingreso" className='pestaña' >Ingresar</Link></li>
             <li className='contenidoPestaña'><Link to="/Registro" className='pestaña' >Registrarse</Link></li>
           </ul>
         </div>}
 
-        {logeado() === true && <div className='contenedorIconos'>
+        {logeado === true && <div className='contenedorIconos'>
           <MdMessage ref={contendorMensaje} className='mensaje' onClick={toggleMessage} />
 
           <MdMenu ref={contendorMenu} className='menu' onClick={() => setMenuVisible(!menuVisible)} />
         </div>}
 
-        {menuVisible === true && <ul className='menuVertical' ref={menuRef}>
+        {menuVisible === true && <div className='menuVertical' ref={menuRef}>
           <Link to="/Gestionar-perfil" className='pestaña' >Gestionar Perfil</Link>
           <Link to="/Mis-publicaciones" className='pestaña' >Mis Publicaciones</Link>
           <Link to="/Publicar-inmueble" className='pestaña' >Publicar Inmueble</Link>
+          {usuario.cargo === 'admin' &&
+            <Link to="/Administracion" className='pestaña' >Administracion</Link>
+          }
           <Link to="/" onClick={deslogeado} className='pestaña' >Salir</Link>
-        </ul>}
+        </div>}
 
         {bandejaVisible === true && <div className='bandejaEntrada' ref={mensajeRef}>
 

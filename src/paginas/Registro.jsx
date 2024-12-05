@@ -1,5 +1,5 @@
 import Inputs from '../componentes/Inputs.jsx';
-import { useAuth } from '../Auth/AuthProvider.jsx';
+import { useAuth } from '../auth/AuthProvider.jsx';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import '../hojasEstilos/Registro.css';
 import { useState } from 'react';
@@ -17,8 +17,8 @@ function Registro() {
     const goTo = useNavigate();
     const auth = useAuth();
 
-    if(!!auth.login()){
-        return <Navigate to='/Miperfil' />
+    if(!!auth.login().accessToken){
+        return <Navigate to='/Gestionar-perfil' />
     }
 
     const expresiones = {

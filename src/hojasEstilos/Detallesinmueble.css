@@ -75,6 +75,7 @@
             color: #2c3e50;
             align-items: center;
             justify-content: space-between;
+            font-size: 24px;
 
             & .btn-vendedor {
                 width: 220px;
@@ -156,20 +157,20 @@
     background: #006a98;
 
     & .imagenE {
-        position: fixed;          /* equivalente a 'fixed' */
-        top: 0;                   /* equivalente a 'inset-0' (top: 0) */
-        right: 0;                 /* equivalente a 'inset-0' (right: 0) */
-        bottom: 0;                /* equivalente a 'inset-0' (bottom: 0) */
-        left: 0;                  /* equivalente a 'inset-0' (left: 0) */
-        background-color: rgba(0, 0, 0, 0.75);  /* equivalente a 'bg-black bg-opacity-75' */
-        display: flex;            /* equivalente a 'flex' */
-        align-items: center;      /* equivalente a 'items-center' */
-        justify-content: center;  /* equivalente a 'justify-center' */
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         z-index: 50; 
 
         & .imagen {
-            max-width: 48rem;        /* equivalente a 'max-w-3xl' (48rem en Tailwind) */
-            max-height: 48rem;       /* equivalente a 'max-h-3xl' (48rem en Tailwind) */
+            max-width: 48rem;
+            max-height: 48rem;
             border-radius: 0.5rem;
         }
     }

@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext({
-    saveUser: (userData) => {},
+    saveUser: () => {},
     logout: () => {},
     login: () => {},
 });
@@ -12,31 +12,35 @@ export function AuthProvider({ children }) {
         return storedToken ? JSON.parse(storedToken) : "";
     });
 
-    const [refreshToken, setRefreshToken] = useState("");
-    if(refreshToken){}
+    const [cargo, setCargo] = useState(() => {
+        const storedCargo = localStorage.getItem("cargo");
+        return storedCargo ? JSON.parse(storedCargo) : "";
+    })
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
-        if (storedToken) {
-            setAccessToken(JSON.parse(storedToken));
-        }
+        const storedCargo = localStorage.getItem("cargo");
+        if (storedToken) setAccessToken(JSON.parse(storedToken));
+        if (storedCargo) setCargo(JSON.parse(storedCargo));
     }, []);
 
     function login() {
-        return accessToken;
+        return { accessToken, cargo };
     }
 
     function logout() {
+        setCargo("");
         setAccessToken("");
-        setRefreshToken("");
         localStorage.removeItem("token");
+        localStorage.removeItem("cargo");
     }
 
     function saveUser(userData) {
+        setCargo(userData.body.cargo);
         setAccessToken(userData.body.accessToken);
-        setRefreshToken(userData.body.refreshToken);
 
-        localStorage.setItem("token", JSON.stringify(userData.body.refreshToken));
+        localStorage.setItem("token", JSON.stringify(userData.body.accessToken));
+        localStorage.setItem("cargo", JSON.stringify(userData.body.cargo));
     }
 
     return (

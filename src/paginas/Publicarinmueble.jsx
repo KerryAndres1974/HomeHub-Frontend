@@ -18,7 +18,7 @@ function Mispublicaiones() {
   const [guardaImagenes, setGuardaImagenes] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState('');
-  const [isLoading, setIsLoading] = useState(null);
+  const [loading, setLoading] = useState(null);
   
   // Expresiones para formularios
   const expresiones = {
@@ -82,6 +82,7 @@ function Mispublicaiones() {
   // Envia la peticion al backend para publicar el inmueble
   const publicarInmueble = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const propietario = usuario.id;
     const formDataArray = [];
@@ -103,8 +104,6 @@ function Mispublicaiones() {
         });
         return;
       }
-
-      setIsLoading(true);
 
       for(let i=0; i < guardaImagenes.length; i++){
         let files = guardaImagenes[i];
@@ -154,6 +153,7 @@ function Mispublicaiones() {
           Swal.fire({
             icon: "success",
             title: "Publicado Exitosamente",
+            allowOutsideClick: false,
           }).then(() => window.location.reload());
           
         })
@@ -177,14 +177,10 @@ function Mispublicaiones() {
         showConfirmButton: false
       });
     }
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000)
   };
 
   return(
-    <div className='paginaPublicar' style={{ cursor: isLoading ? 'wait' : ''}}>
+    <div className='paginaPublicar'>
 
       <button className='botonH' onClick={() => window.history.back()}>Volver a Home</button>
 
@@ -310,11 +306,11 @@ function Mispublicaiones() {
             ref={fileInputRef} multiple/>
 
           <input
-            className='btn-publicar'
+            className={`btn-publicar ${loading ? 'disabled' : ''}`}
             value='Publicar'
             type='submit'
-            style={{ cursor: isLoading ? 'wait' : ''}}
-            disabled={isLoading}/>
+            onClick={() => console.log('click')}
+            disabled={loading === true}/>
 
         </form>
 

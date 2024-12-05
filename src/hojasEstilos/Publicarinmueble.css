@@ -117,7 +117,7 @@
             }
         }
         
-        & .btn-publicar{
+        & .btn-publicar {
             font-family: Roboto, sans-serif;
             font-size: 18px;
             padding: 10px 0;
@@ -132,6 +132,11 @@
             &:hover {
                 background-color: #2980b9;
             }
+        }
+
+        .btn-publicar.disabled {
+            cursor: auto;
+            opacity: 0.6;
         }
     }
 }

@@ -58,7 +58,7 @@ code {
     left: 20px;
     cursor: pointer;
     font-size: 16px;
-    z-index: 1000;
+    z-index: 10;
     color: black;
     border-radius: 10px;
     padding: 14px 28px;

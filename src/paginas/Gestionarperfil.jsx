@@ -15,9 +15,6 @@ function Gestionarperfil() {
   const [contraseña2, setContraseña2] = useState({campo: '', valido: null});
   
   // Para completar tu perfil
-  const [realizados, setRealizados] = useState({campo: '', valido: null});
-  const [descripcion, setDescripcion] = useState({campo: '', valido: null});
-  const [experiencia, setExperiencia] = useState({campo: '', valido: null});
   const [selectedImage, setSelectedImage] = useState(null);
   const añadeFoto = useRef(null);
 
@@ -94,8 +91,7 @@ function Gestionarperfil() {
     e.preventDefault();
     
     if(nombre.valido === 'true' || (contraseña.valido === 'true' && validarContraseña() === true) || 
-      correo.valido === 'true' || telefono.valido === 'true' || realizados.valido === 'true' || 
-      descripcion.valido === 'true' || experiencia.valido === 'true' || selectedImage){
+      correo.valido === 'true' || telefono.valido === 'true' || selectedImage){
       let imagen = '';
 
       if(selectedImage){
@@ -118,13 +114,16 @@ function Gestionarperfil() {
         }
       }
 
-      const datos = JSON.stringify({
-        name: nombre.campo,
-        password: contraseña.campo,
-        email: correo.campo,
-        phone: telefono.campo,
-        fotoperfil: imagen 
-      });
+      const datos = JSON.stringify(
+        Object.fromEntries(
+          Object.entries({
+            name: nombre.campo,
+            password: contraseña.campo,
+            email: correo.campo,
+            phone: telefono.campo,
+            fotoperfil: imagen
+          }).filter(([_, valor]) => valor !== '') 
+      ));
 
       fetch(`http://localhost:8000/usuarios/${usuario.id}`, {
         method: 'PUT',
@@ -139,16 +138,13 @@ function Gestionarperfil() {
         }
         return response.json(); // Suponiendo que el servidor responde con JSON
       })
-      .then(data => {
+      .then(() => {
         // Manejar la respuesta exitosa aquí
         setNombre({campo: '', valido: null});
         setCorreo({campo: '', valido: null});
         setContraseña({campo: '', valido: null});
         setContraseña2({campo: '', valido: null});
         setTelefono({campo: '', valido: null});
-        setRealizados({campo: '', valido: null});
-        setDescripcion({campo: '', valido: null});
-        setExperiencia({campo: '', valido: null});
         setFormularioValido(null);
         Swal.fire({
           icon: "success",

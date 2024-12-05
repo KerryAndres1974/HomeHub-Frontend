@@ -1,5 +1,5 @@
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Auth/AuthProvider.jsx';
+import { useAuth } from '../auth/AuthProvider.jsx';
 import '../hojasEstilos/Ingreso.css';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
@@ -11,8 +11,8 @@ function Ingreso() {
     const goTo = useNavigate();
     const auth = useAuth();
 
-    if(!!auth.login()){
-        return <Navigate to='/Miperfil' />
+    if(!!auth.login().accessToken){
+        return <Navigate to='/Gestionar-perfil' />
     }
 
     async function Ingresar(e) {
@@ -33,9 +33,14 @@ function Ingreso() {
                 }
 
                 const { token } = await response.json();
+                    
+                // decodificaion del token para obtener el cargo
+                const [, cargaUtil] = token.split('.');
+                const cargaUtilDeco = atob(cargaUtil);
+                const usuario = JSON.parse(cargaUtilDeco);
 
                 if (response.ok){
-                    auth.saveUser({ body: { accessToken: "dummyRefreshToken", refreshToken: token } });
+                    auth.saveUser({ body: { accessToken: token, cargo: usuario.cargo } });
                     goTo("/");
                 }
 

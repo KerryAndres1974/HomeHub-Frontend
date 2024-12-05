@@ -123,9 +123,8 @@ export function Editarproyecto() {
 
     // Envia la peticion al backend para actualizar el proyecto
     async function editarProyecto(e) {
-        setLoading(true);
         e.preventDefault();
-        if (loading) return;
+        setLoading(true);
         const formDataArray = [];
         const accion = e.nativeEvent.submitter.value;
         
@@ -168,29 +167,26 @@ export function Editarproyecto() {
 
                     const urlsArray = response.map(data => data.secure_url);
 
-                    const datos = JSON.stringify({
-                        descripcion: descripcion.campo,
-                        ciudad: ciudad,
-                        tipo: tipo, 
-                        precio: precio.campo,
-                        nombre: nombre.campo,
-                        direccion: direccion.campo,
-                        imagenes: urlsArray
-                    });
+                    const datos = JSON.stringify(
+                        Object.fromEntries(
+                          Object.entries({
+                            descripcion: descripcion.campo,
+                            ciudad: ciudad,
+                            tipo: tipo, 
+                            precio: precio.campo,
+                            nombre: nombre.campo,
+                            direccion: direccion.campo,
+                            imagenes: urlsArray
+                          }).filter(([_, valor]) => valor !== '') 
+                      ));
 
                     fetch(`http://localhost:8000/proyectos/${idProyecto}`, {
                         method: 'PUT',
                         body: datos,
                         headers: { 'Content-Type': 'application/json' },
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
-                        }
-                        return response.json(); // Suponiendo que el servidor responde con JSON
-                    })
                     .then(() => {
-                        // Manejar la respuesta exitosa aquí
+                        
                         Swal.fire({
                             icon: "success",
                             title: "Se guardaron los cambios Exitosamente",
@@ -200,7 +196,7 @@ export function Editarproyecto() {
                             position: 'top-end',
                             width: '35%',
                             timer: 3000,
-                        });
+                        }).then(() => window.location.reload());
                     })
                     .catch(error => {
                         console.error(error);
@@ -243,18 +239,14 @@ export function Editarproyecto() {
                             'Content-Type': 'application/json'
                         },
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
-                        }
-                        return response.json(); // Suponiendo que el servidor responde con JSON
-                    })
                     .then(() => {
+
                         Swal.fire({
                             icon: "success",
                             title: "Se elimino la publicacion Exitosamente",
                             showConfirmButton: false,
                             toast: true,
+                            width: '35%',
                             color: 'green',
                             position: 'top-end',
                             timer: 3000,
@@ -267,10 +259,6 @@ export function Editarproyecto() {
                 }
             })
         }
-
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000)
     }
 
     const handleFileChange = (event) => {
@@ -381,11 +369,13 @@ export function Editarproyecto() {
                             className={`btn-editar ${loading ? 'disabled' : ''}`} 
                             type='submit' 
                             value='Confirmar'
+                            disabled={loading === true}
                         />
                         <input 
                             className={`btn-eliminar ${loading ? 'disabled' : ''}`} 
                             type='submit' 
                             value='Eliminar'
+                            disabled={loading === true}
                         />
                     </div>
 

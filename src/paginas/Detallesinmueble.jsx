@@ -1,10 +1,11 @@
 import '../hojasEstilos/Detallesinmueble.css';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Inputs from '../componentes/Inputs';
 import Swal from 'sweetalert2';
 
 function Detallesinmueble() {
+    const goTo = useNavigate();
     const { idProyecto } = useParams();
     const [proyecto, setProyecto] = useState([]);
     const [propietario, setPropietario] = useState([]);
@@ -15,7 +16,6 @@ function Detallesinmueble() {
     const [telefono, setTelefono] = useState({campo: '', valido: null});
     const [terminos, cambiarTerminos] = useState(false);
     const [formularioValido, setFormularioValido] = useState(null);
-    const [mostrarInfo, setMostrarInfo] = useState(false);
     const [imagenes, setImagenes] = useState([]);
     const [selectedImage, setSelectedImage] = useState('');
 
@@ -176,21 +176,10 @@ function Detallesinmueble() {
                 </div>
 
                 <div className="caracteristicas">
-                    <h1 className='textoZonas'>Zonas Comunes
-                        <button className='btn-vendedor' onClick={() => setMostrarInfo(true)}>Ver datos del vendedor</button>
-                        {mostrarInfo && (
-                            <div className="infoVendedor" onClick={() => setMostrarInfo(false)}>
-                                <div className="info">
-                                    <h3>informacion del vendedor</h3>
-                                    <div className='infoDatos'>
-                                        <p>Nombre: {propietario.name}</p>
-                                        <p>Email: {propietario.email}</p>
-                                        <p>Telefono: {propietario.phone}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </h1>
+                    <div className='textoZonas'>
+                        <strong>Zonas Comunes</strong>
+                        <button className='btn-vendedor' onClick={() => goTo(`/Propietario/${propietario.id}`)}>Ver Perfil del Vendedor</button>
+                    </div>
 
                     <div className='zonasComunes'>    
                         <div>

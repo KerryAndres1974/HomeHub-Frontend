@@ -72,6 +72,23 @@
             background-color: #2980b9;
         }
     }
+
+    & .contenedor-final {
+        width: 70%;
+        display: flex;
+        justify-content: space-evenly;
+    
+        & .pregunta-login {
+            list-style: none;
+            font-size: 0.8rem;
+            color: #001f3f;
+        }
+    
+        & .pestaña {
+            font-size: 0.8rem;
+            color: blue;
+        }
+    }
 }
 
 #mensaje-Error{

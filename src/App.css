@@ -19,7 +19,7 @@
 .contenedorPrincipal {
     background-image: url('./multimedia/fondoApp.jpg');
     background-size: 100% cover;
-    background-repeat: repeat; /* O "repeat-x" para repetir solo en la dirección horizontal */
+    background-repeat: repeat;
     background-position: center center;
     animation: desplazamiento 200s linear infinite;
 }
@@ -256,14 +256,13 @@ header {
 }
 
 .menuVertical {
-    list-style: none;
     position: absolute;
     right: 4px;
     top: 72px;
     background: #f5f6f7;
     display: flex;
     flex-direction: column;
-    height: 165px;
+    height: auto;
     width: 200px;
     justify-content: space-between;
     border-radius: 10px;
