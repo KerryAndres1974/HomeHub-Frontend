@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useAuth } from './auth/AuthProvider.jsx';
+import { useAuth } from './AuthProvider.jsx';
 
 function RutaProtegida({ allowedRoles }) {
     const auth = useAuth();
