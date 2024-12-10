@@ -149,7 +149,7 @@ function Admin() {
                 </table>                
             </div>
 
-            {view && <div className='carrusel-proy'>
+            {view && <div className='carrusel-proy'> 
                 <MdClose className='close' onClick={() => setView(false)}/>
 
                 <button className={`prev ${propiedades.length <= 3 ? 'hide-button' : ''}`} 
