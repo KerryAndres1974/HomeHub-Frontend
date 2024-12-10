@@ -1,0 +1,292 @@
+.paginaDetalles {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    position: relative;
+}
+
+.parte1 {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    & .detalles {
+        height: 90%;
+        width: 50%;
+        background: #2c3e50;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        font-family: Lato, sans-serif;
+
+        & .precioInmuebles {
+            height: 100px;
+            width: 500px;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            color: #fff;
+            background: #888;
+        }
+
+        & .contenidoAdd{
+            height: 200px;
+            width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+            border: 2px solid grey;
+
+            & .addI {
+                width: 43%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: space-evenly;
+            }
+
+            & .addD {
+                width: 55%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+            }
+        }
+    }
+
+    & .caracteristicas {
+        height: 90%;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        font-family: Lato, sans-serif;
+        background: #888;
+
+        & .textoZonas{
+            width: 80%;
+            display: flex;
+            color: #2c3e50;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 24px;
+
+            & .btn-vendedor {
+                width: 220px;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                color: black;
+                border-radius: 10px;
+                padding: 10px 0;
+                background: #f2f2f2;
+                transition: all 0.3s ease;
+                &:hover {
+                    background: #0b7dda;
+                    color: white
+                }
+            }
+
+            & .infoVendedor {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);  /* Fondo oscuro */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                & .info {
+                    background: white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 20px;
+                    border-radius: 5px;
+                    height: 300px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+                    & .infoDatos {
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        justify-content: space-evenly;
+                    }
+                }
+            }
+        }
+
+        & .zonasComunes {
+            width: 85%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            border-top: 2px solid #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            
+            & div {
+                width: 40%;
+                height: 70%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+            }
+        }
+    }
+}
+
+.parte2 {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: #006a98;
+
+    & .imagenE {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50; 
+
+        & .imagen {
+            max-width: 48rem;
+            max-height: 48rem;
+            border-radius: 0.5rem;
+        }
+    }
+
+    & .galeria {
+        width: 50%;
+        height: 600px;
+        display: flex;
+        color: #fff;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+
+        & .tituloGaleria {
+            font-size: 3rem;
+            color: #fff;
+        }
+
+        & .imagenes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+
+        & .imagenInmueble {
+            margin-top: 30px;
+            width: 200px;
+            height: 200px;
+            cursor: pointer; 
+            position: relative;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+
+            & .imagenI {
+                width: 100%; 
+                height: 100%; 
+                object-fit: cover;
+                border-radius: 0.5rem;
+            }
+        }
+    }
+
+    & .datosInteresado {
+        width: 40%;
+        height: 650px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        background: #fff;
+
+        & .tituloInteresado {
+            font-size: 1.8rem;
+            color: #006a98;
+        }
+
+        & .contenedorInputs {
+            width: 400px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            & .formularioDinamico {
+                padding: 8px;
+                font-size: 16px;
+                border: 2px solid transparent;
+                outline: none;
+                background: #e6f7ff;
+                border-radius: 8px;
+                width: 350px;
+                min-height: 48px;
+                margin-top: 20px;
+                margin-left: 23px;
+                transition: all 0.3s ease;
+                &:focus {
+                    border: 2px solid blue;
+                }
+
+                & option {
+                    background-color: #f5f5f5;
+                    color: #333;
+                    font-size: 14px;
+                }
+
+                & option:checked {
+                    background-color: #ddd;
+                }
+            }
+
+            & .terminos {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 300px;
+                font-size: 0.8rem;
+            }
+        }
+
+        & .btn-enviar {
+            font-family: Roboto, sans-serif;
+            font-size: 18px;
+            padding: 14px 32px;
+            background: #3498db;
+            color: #fff;
+            border-radius: 15px;
+            cursor: pointer;
+            text-align: center;
+            width: 250px;
+            border: 2px solid #2980b9;
+            transition: all 0.3s ease;
+            &:hover {
+                background-color: #2980b9;
+            }
+        }
+    }
+}

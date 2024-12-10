@@ -1,0 +1,110 @@
+.principal-recup{
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background-image: url('../multimedia/fondo.jpg');
+    background-position: center center;
+    background-repeat: repeat;
+    animation: desplazamiento 30s linear infinite;
+}
+
+.contenedor-recup{
+    width: 400px;
+    height: auto;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 13px 13px 13px 0 rgb(0 0 0 / 20%);
+
+    & .texto-recup{
+        font-size: 1.3rem;
+        color: #001f3f;
+        margin-bottom: 15px;
+    }
+
+    & .contenedor-inputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        & .input-text{
+            font-size: 0.8rem;
+            margin-left: 6px;
+            color: #001f3f;
+        }
+        
+        & .correo{
+            border: 2px solid transparent;
+            padding: 12px;
+            transition: all 0.5s ease;
+            background: #e6f7ff;
+            border-radius: 8px;
+            font-size: 18px;
+            outline: none;
+            width: 320px;
+        
+            &:focus{
+                border: 2px solid blue;
+            }
+        }    
+    }
+
+    & .btn-recup{
+        font-family: Roboto, sans-serif;
+        font-size: 18px;
+        padding: 14px 32px;
+        background: #3498db;
+        color: #fff;
+        border-radius: 20px;
+        cursor: pointer;
+        text-align: center;
+        width: 250px;
+        border: 2px solid #2980b9;
+        transition: 0.5s ease;
+        margin: 15px 0 10px 0;
+        &:hover {
+            background-color: #2980b9;
+        }
+    }
+
+    & .contenedor-final {
+        width: 70%;
+        display: flex;
+        justify-content: space-evenly;
+    
+        & .pregunta-login {
+            list-style: none;
+            font-size: 0.8rem;
+            color: #001f3f;
+        }
+    
+        & .pestaña {
+            font-size: 0.8rem;
+            color: blue;
+        }
+    }
+}
+
+#mensaje-Error{
+    height: 26px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 17px;
+    padding: 0 15px;
+    border-radius: 10px;
+}
+
+#mensaje-Exito{
+    height: 26px;
+    background: #00e031;
+    color: #fff;
+    font-size: 17px;
+    padding: 0 15px;
+    border-radius: 10px;
+}

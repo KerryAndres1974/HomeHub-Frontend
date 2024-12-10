@@ -1,0 +1,125 @@
+.principal-admin {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-image: url('../multimedia/fondo.jpg');
+    background-position: center center;
+    background-repeat: repeat;
+    animation: desplazamiento 30s linear infinite;
+}
+
+.contenedor-usuarios {
+    width: 90%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 13px 13px 13px 0 rgb(0 0 0 / 20%);
+
+    .tabla-usuarios {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+    }
+    
+    .tabla-usuarios .cabecera {
+        background-color: #2c3e50; 
+        color: white;
+        font-weight: bold;
+    }
+    
+    .tabla-usuarios .casilla {
+        text-align: center;
+        border: 1px solid #ddd; 
+        padding: 8px; 
+    }
+
+    .tabla-usuarios .fila.red {
+        color: red;
+    }
+    
+    .tabla-usuarios .fila:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+    .tabla-usuarios .fila:hover {
+        background-color: #e9ecef;
+    }
+
+    .tabla-usuarios .casilla button {
+        padding: 5px 10px;
+        font-size: 12px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tabla-usuarios .casilla .ojito {
+        cursor: pointer;
+        color: #007bff;
+    }
+    
+    .tabla-usuarios .casilla button:hover {
+        background-color: #0056b3;
+    }
+}
+
+.carrusel-proy {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    position: fixed;
+    z-index: 20;
+    align-items: center;
+    transition: transform 0.5s ease;
+
+    & .carrusel-proyecto {
+        margin-left: 70px;
+        border-radius: 20px;
+        transition: all 0.4s ease;
+    }
+
+    & .close {
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+        cursor: pointer;
+        color: #91979c;
+        position: absolute;
+        font-size: 34px;
+    }
+    
+    & .prev, .next {
+        top: 0;
+        z-index: 1;
+        width: 30px;
+        height: 80%;
+        margin-top: 5%;
+        border: none;
+        display: flex;
+        color: #91979c;
+        font-size: 34px;
+        cursor: pointer;
+        background: none;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    & .hide-button {
+        display: none;
+    }
+}

@@ -1,0 +1,39 @@
+.texto-input {
+    font-size: 0.8rem;
+    margin-left: 5px;
+    color: #001f3f;
+}
+
+.texto-input.error {
+    color: red;
+}
+
+.input {
+    border: 2px solid transparent;
+    padding: 12px;
+    transition: all 0.5s ease;
+    background: #e6f7ff;
+    border-radius: 8px;
+    font-size: 18px;
+    outline: none;
+    width: 320px;
+
+    &:focus{
+        border: 2px solid blue;
+    }
+}
+
+.input.error{
+    border: 2px solid red;
+}
+
+.leyendaError {
+    font-size: 0.7rem;
+    margin-left: 5px;
+    display: none;
+    color: red;
+}
+
+.leyendaError.error {
+    display: block;
+}

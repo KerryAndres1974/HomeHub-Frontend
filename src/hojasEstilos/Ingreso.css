@@ -1,0 +1,94 @@
+.principal-login {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background-image: url('../multimedia/fondo.jpg');
+    background-position: center center;
+    background-repeat: repeat;
+    animation: desplazamiento 30s linear infinite;
+}
+
+.contenedor-login {
+    width: 400px;
+    height: 300px;
+    overflow: hidden;
+    transition: height 0.5s ease;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 13px 13px 13px 0 rgb(0 0 0 / 20%);
+
+    & .texto-login {
+        font-size: 1.3rem;
+        color: #001f3f;
+    }
+
+    & .contenedor-inputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        & .input-text {
+            font-size: 0.8rem;
+            margin-left: 6px;
+            color: #001f3f;
+        }
+    
+        & .input {
+            border: 2px solid transparent;
+            padding: 12px;
+            transition: all 0.5s ease;
+            background: #e6f7ff;
+            border-radius: 8px;
+            font-size: 18px;
+            outline: none;
+            width: 320px;
+        
+            &:focus{
+                border: 2px solid blue;
+            }
+        }
+    }
+
+    & .btn-login{
+        font-family: Roboto, sans-serif;
+        font-size: 18px;
+        padding: 14px 32px;
+        background: #3498db;
+        color: #fff;
+        border-radius: 20px;
+        cursor: pointer;
+        text-align: center;
+        width: 250px;
+        border: 2px solid #2980b9;
+        transition: 0.5s ease;
+        &:hover {
+            background-color: #2980b9;
+        }
+    }
+
+    & .contenedor-rutas {
+        width: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        list-style: none;
+
+        & .pestaña {
+            font-size: 0.8rem;
+            color: blue;
+        }
+    }
+}
+
+#mensaje-Error{
+    height: 26px;
+    background: #e74c3c;
+    color: #fff;
+    padding: 0 15px;
+    border-radius: 10px;
+}

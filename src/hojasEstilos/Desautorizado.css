@@ -1,0 +1,37 @@
+.contenedor-desautorizado {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    color: #212529; 
+    font-family: Arial, sans-serif;
+}
+
+.titulo-des {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #dc3545;
+}
+
+.texto-des {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #6c757d;
+}
+
+.boton-des {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}

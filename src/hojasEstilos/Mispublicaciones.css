@@ -1,0 +1,88 @@
+.paginaMisPublicaciones {
+    display: grid;
+    height: 100vh;
+    place-items: center;
+    background-repeat: repeat;
+    background-position: center center;
+    background-image: url('../multimedia/fondo.jpg');
+    animation: desplazamiento 30s linear infinite;
+}
+
+.tituloPublicadoX {
+    font-size: 1.6rem;
+}
+
+.botones {
+    width: 600px;
+    display: flex;
+    justify-content: space-around;
+
+    & .boton {
+        border: none; 
+        color: black; 
+        cursor: pointer; 
+        border-radius: 10px;
+        padding: 14px 28px;
+        background: #f2f2f2;
+        font-family: sans-serif;
+        transition: all 0.3s ease;
+        border: 2px solid #007bff;
+        &:hover {
+            background: #0b7dda;
+            color: white
+        }
+    }
+}
+
+.contenedor-carrusel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    
+    & .carrusel-vacio {
+        height: 550px;
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 1.4rem;
+        background: #0b7adb70;
+    }
+
+    & .carrusel {
+        height: 550px;
+        display: flex;
+        align-items: center;
+        background: #0b7adb70;
+        transition: transform 0.5s ease;
+
+        & .carrusel-proyecto {
+            cursor: pointer;
+            margin-left: 70px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            &:hover {
+                box-shadow: 13px 13px 13px 0 rgb(0 0 0 / 20%);
+            }
+        }
+    }
+
+    .prev, .next {
+        top: 0;
+        z-index: 1;
+        width: 30px;
+        height: 100%;
+        border: none;
+        display: flex;
+        color: black;
+        font-size: 34px;
+        cursor: pointer;
+        background: none;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    & .hide-button {
+        display: none;
+    }
+}

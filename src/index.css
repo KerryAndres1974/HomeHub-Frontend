@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes desplazamiento {
+    0% {
+        background-position: 0 0; /* Comienza en la posición inicial */
+    }
+    50% {
+        background-position: 0 100%; /* Llega a la posición final en la mitad del tiempo */
+    }
+    100% {
+        background-position: 0 0; /* Vuelve a la posición inicial al final */
+    }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f6f7;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dadada;
+  border-radius: 50px;
+}
+
+.equis {
+  position: absolute; /* Para posicionarlo relativo al contenedor */
+  top: 5px;           /* Ajusta según el espacio que necesites */
+  right: 5px;         /* Ajusta según el espacio que necesites */
+  color: red;         /* Color del ícono, cámbialo según el diseño */
+  font-size: 20px;    /* Tamaño del ícono */
+  cursor: pointer;    /* Cursor de mano para indicar que es clickeable */
+  z-index: 10;
+}
+
+.addH {
+  font-size: 40px;
+}
+
+.botonH {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 10;
+    color: black;
+    border-radius: 10px;
+    padding: 14px 28px;
+    background: #f2f2f2;
+    font-family: sans-serif;
+    transition: all 0.3s ease;
+    border: 2px solid #007bff;
+    &:hover {
+        background: #0b7dda;
+        color: white
+    }
+}

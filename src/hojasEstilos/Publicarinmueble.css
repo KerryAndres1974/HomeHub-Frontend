@@ -1,0 +1,142 @@
+.paginaPublicar {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background-image: url('../multimedia/fondo.jpg');
+    background-position: center center;
+    background-repeat: repeat;
+    animation: desplazamiento 30s linear infinite;
+}
+
+.contenedorPublicar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    & .contenedorImagenesPublicacion{
+        width: 440px;
+        height: 500px;
+        display: flex;
+        padding: 0 14px;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        background: #61778a70;
+        border-radius: 15px;
+
+        & .contenedorImagenesSeleccionadas {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-evenly;
+
+            & .imagenS {
+                border-radius: 20px;
+                width: 180px;
+                height: 140px;
+            }
+    
+            & .imagenV {
+                width: 180px;
+                height: 135px;
+                cursor: pointer;
+                border-radius: 20px;
+                display: grid;
+                place-content: center;
+                border: 2px dashed white;
+            }
+
+            & .imagenE {
+                position: fixed;
+                inset: 0;
+                z-index: 50;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.75);
+
+                & .imagen {
+                    max-width: 48rem;
+                    max-height: 48rem;
+                    border-radius: 0.5rem;
+                }
+            }
+        }
+    }
+
+    & .contenedorFormulario {
+        width: 800px;
+        height: 450px;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 13px 13px 13px 0 rgb(0 0 0 / 20%);
+
+        & .textoPublicar{
+            font-size: 1.3rem;
+            color: #001f3f;
+        }
+
+        & .contendedor-inputs {
+            display: grid;
+            place-items: center;
+            height: 300px;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 25px;
+
+            & .formularioDinamico {
+                padding: 8px;
+                font-size: 16px;
+                border: 2px solid transparent;
+                outline: none;
+                background: #e6f7ff;
+                border-radius: 8px;
+                width: 350px;
+                min-height: 48px;
+                transition: all 0.3s ease;
+                &:focus {
+                    border: 2px solid blue;
+                }
+
+                & option {
+                    background-color: #f5f5f5;
+                    color: #333;
+                    font-size: 14px;
+                }
+
+                & option:checked {
+                    background-color: #ddd;
+                }
+            }
+        }
+        
+        & .btn-publicar {
+            font-family: Roboto, sans-serif;
+            font-size: 18px;
+            padding: 10px 0;
+            background: #3498db;
+            color: #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            width: 340px;
+            border: 2px solid #2980b9;
+            transition: 0.5s ease;
+            &:hover {
+                background-color: #2980b9;
+            }
+        }
+
+        .btn-publicar.disabled {
+            cursor: auto;
+            opacity: 0.6;
+        }
+    }
+}
