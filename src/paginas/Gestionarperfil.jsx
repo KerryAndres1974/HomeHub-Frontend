@@ -66,7 +66,7 @@ function Gestionarperfil() {
         const user = JSON.parse(cargaUtilDecodificada);
             
         // Puedes establecer el usuario en el estado
-        fetch(`http://localhost:8000/usuarios/${user.id}`)
+        fetch(`https://homehub-back-production.up.railway.app/usuarios/${user.id}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error('Error al obtener la información del usuario');
@@ -125,7 +125,7 @@ function Gestionarperfil() {
           }).filter(([_, valor]) => valor !== '') 
       ));
 
-      fetch(`http://localhost:8000/usuarios/${usuario.id}`, {
+      fetch(`https://homehub-back-production.up.railway.app/usuarios/${usuario.id}`, {
         method: 'PUT',
         body: datos,
         headers: {

@@ -54,13 +54,13 @@ function Detallesinmueble() {
     useEffect(() => {
         const cargarUsuario = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/proyectos/proyecto/${idProyecto}`);
+                const response = await fetch(`https://homehub-back-production.up.railway.app/proyectos/proyecto/${idProyecto}`);
     
                 if(response.ok){
                     const data = await response.json();
 
                     try {
-                        const response = await fetch(`http://localhost:8000/usuarios/${data[0].idusuario}`);
+                        const response = await fetch(`https://homehub-back-production.up.railway.app/usuarios/${data[0].idusuario}`);
             
                         if(response.ok){
                             const dato = await response.json();
@@ -84,7 +84,7 @@ function Detallesinmueble() {
 
         const cargarImagenes = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/imagenes/${idProyecto}`);
+                const response = await fetch(`https://homehub-back-production.up.railway.app/imagenes/${idProyecto}`);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -119,7 +119,7 @@ function Detallesinmueble() {
                 nombre: nombre.campo
             })
 
-            fetch('http://localhost:8000/asesorias', {
+            fetch('https://homehub-back-production.up.railway.app/asesorias', {
                 method: 'POST',
                 body: datos,
                 headers: {

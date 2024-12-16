@@ -110,7 +110,7 @@ export function App() {
     setBandejaVisible(!bandejaVisible);
     const cargarMensajes = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/asesorias/${usuario.id}`);
+        const response = await fetch(`https://homehub-back-production.up.railway.app/asesorias/${usuario.id}`);
 
         if (response.ok) {
           const datos = await response.json();
@@ -185,8 +185,8 @@ export function App() {
 
     const cargarProyectos = async () => {
       try {
-        const response = await fetch('http://localhost:8000/proyectos');
-
+        const response = await fetch('https://homehub-back-production.up.railway.app/proyectos');
+        
         if (response.ok) {
           const datos = await response.json();
           setProyecto(datos);
@@ -354,7 +354,7 @@ export function App() {
                   tipo={proyecto.tipo}
                   ciudad={proyecto.ciudad}
                   precio={proyecto.precio}
-                  imagen={proyecto.imagen}
+                  imagen={proyecto.imagen_url}
                   direccion={proyecto.direccion}
                   descripcion={proyecto.descripcion}
                   coincide={usuario ? usuario.id === proyecto.idusuario : false}

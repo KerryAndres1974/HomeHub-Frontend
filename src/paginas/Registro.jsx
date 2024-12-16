@@ -59,7 +59,7 @@ function Registro() {
                 phone: telefono.campo
             });
             
-            fetch('http://localhost:8000/usuarios', {
+            fetch('https://homehub-back-production.up.railway.app/usuarios', {
                 method: 'POST',
                 body: datos,
                 headers: {

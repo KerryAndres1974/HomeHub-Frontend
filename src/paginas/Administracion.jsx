@@ -17,7 +17,7 @@ function Admin() {
         const cargarUsuarios = async () => {
 
             try {
-                const response = await fetch('http://localhost:8000/usuarios');
+                const response = await fetch('https://homehub-back-production.up.railway.app/usuarios');
     
                 if (response.ok) {
                     const datos = await response.json();
@@ -43,7 +43,7 @@ function Admin() {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`http://localhost:8000/usuarios/${idusuario}`, {
+                    const response = await fetch(`https://homehub-back-production.up.railway.app/usuarios/${idusuario}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ admitido: !contrato }),
@@ -76,7 +76,7 @@ function Admin() {
         setPropiedades([]);
 
         try {
-            const response = await fetch(`http://localhost:8000/usuarios/propiedades/${estado}/${idusuario}`);
+            const response = await fetch(`https://homehub-back-production.up.railway.app/usuarios/propiedades/${estado}/${idusuario}`);
 
             if (response.ok) {
                 const datos = await response.json();

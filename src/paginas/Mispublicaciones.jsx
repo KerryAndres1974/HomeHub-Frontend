@@ -37,7 +37,7 @@ function Mispublicaciones() {
   // Carga los proyectos del usuario
   const misProyectos = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/proyectos/usuario/${usuario.id}`);
+      const response = await fetch(`https://homehub-back-production.up.railway.app/proyectos/usuario/${usuario.id}`);
 
       if (response.ok) {
           const data = await response.json();

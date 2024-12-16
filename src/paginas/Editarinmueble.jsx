@@ -45,7 +45,7 @@ export function Editarproyecto() {
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`http://localhost:8000/imagenes/${idimagen}`, {
+                    fetch(`https://homehub-back-production.up.railway.app/imagenes/${idimagen}`, {
                         method: 'DELETE',
                     })
                     .then(response => {
@@ -87,7 +87,7 @@ export function Editarproyecto() {
     useEffect(() => {
         const cargarProyecto = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/proyectos/proyecto/${idProyecto}`);
+                const response = await fetch(`https://homehub-back-production.up.railway.app/proyectos/proyecto/${idProyecto}`);
     
                 if(response.ok){
                     const data = await response.json();
@@ -102,7 +102,7 @@ export function Editarproyecto() {
 
         const cargarImagenes = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/imagenes/${idProyecto}`);
+                const response = await fetch(`https://homehub-back-production.up.railway.app/imagenes/${idProyecto}`);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -180,7 +180,7 @@ export function Editarproyecto() {
                           }).filter(([_, valor]) => valor !== '') 
                       ));
 
-                    fetch(`http://localhost:8000/proyectos/${idProyecto}`, {
+                    fetch(`https://homehub-back-production.up.railway.app/proyectos/${idProyecto}`, {
                         method: 'PUT',
                         body: datos,
                         headers: { 'Content-Type': 'application/json' },
@@ -232,7 +232,7 @@ export function Editarproyecto() {
             }).then((result) => {
     
                 if(result.isConfirmed) {
-                    fetch(`http://localhost:8000/proyectos/${idProyecto}`, {
+                    fetch(`https://homehub-back-production.up.railway.app/proyectos/${idProyecto}`, {
                         method: 'PUT',
                         body: JSON.stringify({ estado: 'inactivo' }),
                         headers: {

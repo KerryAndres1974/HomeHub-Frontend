@@ -14,7 +14,7 @@ function Propietario() {
 
         const cargarUsuario = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/usuarios/${idusuario}`);
+                const response = await fetch(`https://homehub-back-production.up.railway.app/usuarios/${idusuario}`);
     
                 if(response.ok){
                     const dato = await response.json();
@@ -30,7 +30,7 @@ function Propietario() {
 
         const cargarPropiedades = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/proyectos/usuario/${idusuario}`);
+                const response = await fetch(`https://homehub-back-production.up.railway.app/proyectos/usuario/${idusuario}`);
     
                 if(response.ok){
                     const datos = await response.json();

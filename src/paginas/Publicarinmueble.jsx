@@ -138,7 +138,7 @@ function Mispublicaiones() {
           imagenes: urlsArray
         });
 
-        fetch('http://localhost:8000/proyectos', {
+        fetch('https://homehub-back-production.up.railway.app/proyectos', {
           method: 'POST',
           body: datos,
           headers: {

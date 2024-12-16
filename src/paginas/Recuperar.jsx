@@ -45,7 +45,7 @@ function Recuperar() {
         e.preventDefault();
 
         if(fase === 1 && correo !== ''){
-            fetch('http://localhost:8000/usuarios/recuperar', {
+            fetch('https://homehub-back-production.up.railway.app/usuarios/recuperar', {
                 method: 'POST',
                 body: JSON.stringify({email: correo}),
                 headers: {
@@ -75,7 +75,7 @@ function Recuperar() {
             cambiarCorreo(false);
 
         } else if (fase === 2 && codigo !== ''){
-            fetch('http://localhost:8000/usuarios/verify-code', {
+            fetch('https://homehub-back-production.up.railway.app/usuarios/verify-code', {
                 method: 'POST',
                 body: JSON.stringify({email: correo, codigo: codigo}),
                 headers: {
@@ -115,7 +115,7 @@ function Recuperar() {
             let datosJSON = JSON.stringify(datos);
             console.log(datosJSON);
 
-            fetch('http://localhost:8000/usuarios/reset-password', {
+            fetch('https://homehub-back-production.up.railway.app/usuarios/reset-password', {
                 method: 'POST',
                 body: datosJSON,
                 headers: {
